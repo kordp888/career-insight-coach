@@ -8,6 +8,12 @@ An AI career coaching concept focused on discovering job-relevant insights from 
 
 ![AI Career Insight Coach](assets/ai-career-insight-coach-overview.png)
 
+## Live Demo
+
+**[career-insight-coach.vercel.app](https://career-insight-coach.vercel.app)** · 앱 이름: 커리어코치
+
+산업 분석부터 문서화까지 일곱 단계를 가상 데모 데이터로 체험할 수 있습니다. AI 분석은 서버에 키가 설정된 경우에만 동작하고, 그렇지 않으면 가상 예시로 흐름을 둘러볼 수 있습니다.
+
 ## Project Overview
 
 기존 생성형 AI 기반 취업 도구는 빠르게 문장을 만들 수 있지만, 지원자의 실제 경험과 판단 과정이 충분히 드러나지 않으면 결과물이 비슷해질 수 있습니다.
@@ -52,6 +58,16 @@ An AI career coaching concept focused on discovering job-relevant insights from 
 | `templates/portfolio-case-study.md` | 포트폴리오 Case Study 템플릿 |
 | `examples/fictional-candidate.md` | 가상 지원자 예시 |
 | `ROADMAP.md` | 공개 로드맵 |
+| `app/`, `components/`, `lib/` | 공개 웹앱(Next.js) 화면과 가상 데모 데이터 |
+
+## 웹앱 로컬 실행
+
+```bash
+npm install
+npm run dev
+```
+
+AI 분석을 쓰려면 서버 전용 환경 변수 `POTENS_API_KEY` 를 설정합니다. 이 값은 브라우저로 전달되지 않습니다. 설정하지 않아도 가상 예시로 모든 화면을 볼 수 있습니다.
 
 ## Portfolio Positioning
 
@@ -91,7 +107,7 @@ SeSAC AI PM 과정에서 학습한 문제정의, 산업·기업·직무 분석, 
 - 사용자가 본인의 API 사용량과 비용을 직접 관리
 - 기본 공개 프로젝트는 유료 API 없이도 구조와 예시를 확인 가능
 
-현재 공개본은 특정 유료 API 사용을 요구하지 않습니다. 자세한 계획은 [ROADMAP.md](ROADMAP.md)에 있습니다.
+공개 저장소를 받아 실행하는 데 유료 API가 필수는 아닙니다. 자세한 계획은 [ROADMAP.md](ROADMAP.md)에 있습니다.
 
 ## Public Repository Scope
 

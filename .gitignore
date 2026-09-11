@@ -1,8 +1,26 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# next.js
+/.next/
+/out/
+/build
+
+# env files (v0.1 은 환경 변수를 쓰지 않는다)
 .env
 .env.*
-!.env.example
-node_modules/
-.next/
-dist/
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
+
+# misc
 .DS_Store
+*.pem
 *.log
+npm-debug.log*
