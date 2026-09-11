@@ -1,52 +1,136 @@
 # AI Career Insight Coach
 
 > 자소서를 대신 써주는 AI가 아니라,
-> 산업·기업·직무를 이해하고 자신의 실제 경험에서
-> 직무와 연결되는 인사이트를 발견하도록 돕는 AI Career Coach.
-
-An AI career coaching concept focused on discovering job-relevant insights from real experience rather than generating generic application documents.
+> 지원할 곳을 먼저 이해하고 자신의 실제 경험에서
+> 직무와 연결되는 강점을 발견하도록 돕는 AI Career Coach.
 
 ![AI Career Insight Coach](assets/ai-career-insight-coach-overview.png)
 
 ## Live Demo
 
-**[career-insight-coach.vercel.app](https://career-insight-coach.vercel.app)** · 앱 이름: 커리어코치
+**[career-insight-coach.vercel.app](https://career-insight-coach.vercel.app)**
 
-산업 분석부터 문서화까지 일곱 단계를 가상 데모 데이터나 AI 분석으로 체험할 수 있습니다.
+산업·기업·직무 분석부터 경험 정리, 인사이트 발견, 이력서·자소서·포트폴리오까지 하나의 흐름으로 체험할 수 있는 AI 커리어 코칭 웹앱입니다.
 
-## Project Overview
+## Problem
 
-기존 생성형 AI 기반 취업 도구는 빠르게 문장을 만들 수 있지만, 지원자의 실제 경험과 판단 과정이 충분히 드러나지 않으면 결과물이 비슷해질 수 있습니다.
+- AI가 바로 문장을 만들면 지원자마다 다른 경험이 비슷한 표현으로 바뀔 수 있습니다.
+- 직무를 충분히 이해하지 않은 채 자소서부터 쓰는 경우가 많습니다.
+- 실제 판단과 행동보다 문장을 그럴듯하게 만드는 데 집중하기 쉽습니다.
+- 지원자가 자기 경험 안에서 직무와 연결되는 강점을 스스로 찾기 어렵습니다.
 
-이 프로젝트는 문서 자동 생성보다 아래 흐름에 초점을 둡니다.
+## How It Works
 
-**산업 분석 → 기업 분석 → 직무/JD 분석 → 경험 정리 → 직무와 경험 연결 → 인사이트 발견 → 문서 구조화**
+커리어코치는 AI에게 바로 자소서를 써달라고 요청하지 않습니다. 지원할 곳을 먼저 이해하고, 그 다음 내 경험에서 근거를 찾고, 마지막에 문서로 연결합니다.
 
-최종적으로 이력서, 자기소개서, 포트폴리오, 면접 준비에 활용할 수 있는 개인화된 재료를 만드는 것을 목표로 합니다.
+```text
+사용자
+  ↓
+커리어코치 웹앱
+  ↓
+서버 API
+  ↓
+AI 코치
+  ↓
+분석 결과
+  ↓
+사용자 확인·수정
+  ↓
+이력서 · 자기소개서 · 포트폴리오
+```
 
-## Why This Project
+### 실제 동작 흐름
 
-- 비슷한 AI 문장으로 인한 차별성 저하
-- 직무 이해 없이 자기소개서부터 작성하는 문제
-- 경험의 맥락과 판단이 사라지는 문제
-- 지원자가 자신의 강점을 스스로 설명하기 어려운 문제
+1. 사용자가 지원 직무, 기업, 채용공고와 자신의 경험을 입력합니다.
+2. 웹앱이 입력 내용을 서버 API로 전달합니다.
+3. 서버가 필요한 분석을 AI 코치에 요청합니다.
+4. AI가 산업·기업·직무와 사용자의 경험을 구조화합니다.
+5. 사용자가 분석 결과를 직접 확인하고 수정합니다.
+6. 확인한 내용을 이력서·자소서·포트폴리오로 연결합니다.
 
-이 프로젝트의 가설은 한 문장입니다.
-
-> **AI가 답을 대신 만드는 것보다, 사용자가 자기 경험에서 더 좋은 답을 발견하도록 돕는 것이 더 가치 있다.**
-
-## Public Concept Flow
+## Product Flow
 
 1. 산업 분석
 2. 기업 분석
-3. 직무/JD 분석
+3. 직무 / JD 분석
 4. 경험 정리
-5. 직무와 경험 연결
+5. 역량 연결
 6. 인사이트 발견
-7. 문서 구조화
-8. Resume / Cover Letter / Portfolio / Interview 활용
+7. 문서화: 이력서 · 자기소개서 · 포트폴리오
 
-이 저장소는 위 흐름을 이해할 수 있는 포트폴리오, 공개 템플릿, 가상 예시만 제공합니다.
+면접 준비는 아직 구현하지 않았습니다. [Roadmap](#roadmap)에 있습니다.
+
+## Architecture
+
+내부 프롬프트, 평가 기준, 승인 로직은 공개하지 않습니다. 구조만 보여드립니다.
+
+```text
+[Browser]
+사용자 입력
+   │
+   ├── 진행 상태 저장 → localStorage
+   │
+   ▼
+[Next.js Web App]
+화면 / UX
+   │
+   ▼
+[Server API]
+입력 확인 / AI 요청 전달
+   │
+   ▼
+[AI Coach]
+분석 / 경험 연결 / 초안 생성
+   │
+   ▼
+[Server API]
+   │
+   ▼
+[Web App]
+사용자 확인 / 수정 / 최종 활용
+```
+
+### Why This Architecture?
+
+- AI 결과를 정답으로 취급하지 않습니다. 사용자가 직접 확인하고 수정합니다.
+- AI 연결을 브라우저에 직접 노출하지 않습니다. 요청은 서버를 거칩니다.
+- 진행 상태는 브라우저에 저장합니다. 같은 브라우저에서 이어서 작업할 수 있습니다.
+- AI 없이도 전체 흐름을 확인할 수 있습니다. 가상 예시 데이터를 제공합니다.
+- 공개 저장소에는 실제 지원자의 개인정보와 비공개 제품 로직을 포함하지 않습니다.
+
+## Tech Stack
+
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- AI API
+- Vercel
+- Browser localStorage
+
+## 웹앱 로컬 실행
+
+```bash
+npm install
+npm run dev
+```
+
+AI 분석은 서버 API를 거쳐 처리합니다. 이 저장소에는 API 키와 분석 지시문이 없고, 환경 변수 설정도 필요하지 않습니다. AI를 쓸 수 없는 경우에도 가상 예시로 모든 화면을 볼 수 있습니다.
+
+## My Role
+
+- AI Product Planning
+- Problem Definition
+- Career UX Flow Design
+- AI Coaching Flow Design
+- Prototype Development
+- Web Deployment
+
+## Learning Context
+
+SeSAC AI PM 과정에서 학습한 문제정의, 산업·기업·직무 분석, 사용자 관점의 제품 설계 방법론을 바탕으로 개인적으로 확장 설계한 프로젝트입니다.
+
+> Inspired by methodologies learned through the SeSAC AI PM Program. Independently designed and developed.
 
 ## Public Resources
 
@@ -57,61 +141,18 @@ An AI career coaching concept focused on discovering job-relevant insights from 
 | `templates/experience-journal.md` | 경험 정리 템플릿 |
 | `templates/portfolio-case-study.md` | 포트폴리오 Case Study 템플릿 |
 | `examples/fictional-candidate.md` | 가상 지원자 예시 |
-| `ROADMAP.md` | 공개 로드맵 |
 | `app/`, `components/`, `lib/` | 공개 웹앱(Next.js) 화면과 가상 데모 데이터 |
-
-## 웹앱 로컬 실행
-
-```bash
-npm install
-npm run dev
-```
-
-AI 분석은 별도 서비스의 코치 API를 서버에서 호출해 처리합니다. 이 저장소에는 API 키와 분석 지시문이 없고, 환경 변수 설정도 필요하지 않습니다. AI를 쓸 수 없는 경우에도 가상 예시로 모든 화면을 볼 수 있습니다.
-
-## Portfolio Positioning
-
-**Role**  
-AI Product Planning · Career UX Flow · AI Coaching Experience Design · Prototype Planning
-
-**Problem**  
-AI가 지원 문서를 바로 생성하면 지원자의 경험과 판단이 평준화될 수 있다.
-
-**Product Decision**  
-문서 생성을 출발점으로 두지 않고, 산업·기업·직무 이해와 경험 탐색을 선행하는 코칭 흐름으로 재설계했다.
-
-**Expected Outputs**
-
-- Resume bullets
-- Cover-letter writing blueprint
-- Portfolio case study
-- Interview story bank
-
-## Learning Context
-
-SeSAC AI PM 과정에서 학습한 문제정의, 산업·기업·직무 분석, 사용자 관점의 제품 설계 방법론을 바탕으로 개인적으로 확장 설계한 프로젝트입니다.
-
-> Inspired by methodologies learned through the SeSAC AI PM Program. Independently designed and developed.
 
 ## Demo Data Policy
 
-공개 예시는 실제 지원자의 개인정보가 아닌 fictional sample data만 사용합니다.
+공개 예시는 실제 지원자의 개인정보가 아닌 fictional sample data만 사용합니다. 이 저장소에는 실제 지원자의 이력서, 자기소개서, 연락처, 기업별 지원 기록을 포함하지 않습니다.
 
-이 저장소에는 실제 지원자의 이력서, 자기소개서, 연락처, 기업별 지원 기록을 포함하지 않습니다.
+## Roadmap
 
-## Roadmap: BYOK
+- 면접 준비 기능은 아직 구현하지 않았습니다.
+- BYOK(Bring Your Own Key)는 아직 구현하지 않았습니다. 사용자가 직접 AI provider와 API 키를 연결하는 방식을 검토 중입니다.
 
-향후 공개 데모에서는 BYOK(Bring Your Own Key) 방식을 옵션으로 검토합니다.
-
-- 사용자가 원하는 LLM provider를 직접 선택
-- 사용자가 본인의 API 사용량과 비용을 직접 관리
-- 기본 공개 프로젝트는 유료 API 없이도 구조와 예시를 확인 가능
-
-공개 저장소를 받아 실행하는 데 유료 API가 필수는 아닙니다. 자세한 계획은 [ROADMAP.md](ROADMAP.md)에 있습니다.
-
-## Public Repository Scope
-
-이 저장소는 포트폴리오 및 공개 데모 레이어입니다. 제품의 비공개 운영 구현은 포함하지 않습니다.
+자세한 계획은 [ROADMAP.md](ROADMAP.md)에 있습니다.
 
 ## License
 
