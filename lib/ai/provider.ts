@@ -1,21 +1,18 @@
 import "server-only";
 
 /**
- * 포텐스 API 어댑터. 요청을 보내고, 응답 텍스트를 꺼내고, 오류를 한 가지 모양으로 올린다.
+ * AI 분석 어댑터. 요청을 보내고, 응답을 꺼내고, 오류를 한 가지 모양으로 올린다.
  *
- * 계약(실제 연동에서 확인): POST https://ai.potens.ai/api/chat
- *   헤더 Authorization: Bearer <POTENS_API_KEY>
- *   본문 {"prompt": string, "model": string}
- *   응답 {"message": string, ...}
- *
- * 키는 서버 환경 변수에서만 읽는다. 브라우저 번들에 들어가지 않는다.
+ * 분석은 다시ON5060 서비스의 코치 API가 처리한다. 이 저장소에는 API 키도,
+ * 분석 지시문도 없다. 서버 라우트만 이 어댑터를 부르므로 브라우저는 어댑터 주소를 모른다.
  */
 
-const POTENS_URL = "https://ai.potens.ai/api/chat";
-const MODEL = "claude-5-sonnet";
-const TIMEOUT_MS = 45_000;
+const COACH_URL = "https://dasion-app.vercel.app/api/coach";
+const TIMEOUT_MS = 55_000;
 
-export type ProviderErrorKind = "not_configured" | "upstream" | "empty";
+export type TaskName = "industry" | "company" | "job" | "experience" | "insight" | "document";
+
+export type ProviderErrorKind = "not_configured" | "empty_input" | "busy" | "upstream";
 
 export class ProviderError extends Error {
   constructor(public readonly kind: ProviderErrorKind) {
@@ -23,39 +20,39 @@ export class ProviderError extends Error {
   }
 }
 
-export function aiConfigured(): boolean {
-  return Boolean(process.env.POTENS_API_KEY);
-}
-
-export async function complete(prompt: string): Promise<string> {
-  const key = process.env.POTENS_API_KEY;
-  if (!key) throw new ProviderError("not_configured");
-
+export async function runCoachTask(task: TaskName, input: unknown, user: string): Promise<unknown> {
   let res: Response;
   try {
-    res = await fetch(POTENS_URL, {
+    res = await fetch(COACH_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: `Bearer ${key}` },
-      body: JSON.stringify({ prompt, model: MODEL }),
+      headers: { "Content-Type": "application/json", "x-coach-user": user },
+      body: JSON.stringify({ task, input }),
       signal: AbortSignal.timeout(TIMEOUT_MS),
       cache: "no-store",
     });
   } catch {
     throw new ProviderError("upstream");
   }
-  if (!res.ok) {
-    // 상태 코드만 남긴다. 응답 본문과 헤더는 로그에도 남기지 않는다.
-    console.error(`[ai] provider status ${res.status}`);
-    throw new ProviderError("upstream");
-  }
+  const data = (await res.json().catch(() => ({}))) as { result?: unknown; error?: string };
+  if (res.ok && data.result && typeof data.result === "object") return data.result;
+  if (res.status === 503 && data.error === "not_configured") throw new ProviderError("not_configured");
+  if (res.status === 400) throw new ProviderError("empty_input");
+  if (res.status === 429) throw new ProviderError("busy");
+  console.error(`[ai] coach status ${res.status}`);
+  throw new ProviderError("upstream");
+}
 
-  let data: unknown;
+let cached: { value: boolean; at: number } | null = null;
+
+/** AI 분석을 쓸 수 있는지. 1분 동안 결과를 재사용한다. */
+export async function aiConfigured(): Promise<boolean> {
+  if (cached && Date.now() - cached.at < 60_000) return cached.value;
   try {
-    data = await res.json();
+    const res = await fetch(COACH_URL, { signal: AbortSignal.timeout(4000), cache: "no-store" });
+    const data = (await res.json()) as { ai?: boolean };
+    cached = { value: Boolean(data.ai), at: Date.now() };
   } catch {
-    throw new ProviderError("empty");
+    cached = { value: false, at: Date.now() };
   }
-  const message = data && typeof data === "object" ? (data as { message?: unknown }).message : undefined;
-  if (typeof message !== "string" || !message.trim()) throw new ProviderError("empty");
-  return message;
+  return cached.value;
 }

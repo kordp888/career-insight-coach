@@ -12,7 +12,7 @@ An AI career coaching concept focused on discovering job-relevant insights from 
 
 **[career-insight-coach.vercel.app](https://career-insight-coach.vercel.app)** · 앱 이름: 커리어코치
 
-산업 분석부터 문서화까지 일곱 단계를 가상 데모 데이터로 체험할 수 있습니다. AI 분석은 서버에 키가 설정된 경우에만 동작하고, 그렇지 않으면 가상 예시로 흐름을 둘러볼 수 있습니다.
+산업 분석부터 문서화까지 일곱 단계를 가상 데모 데이터나 AI 분석으로 체험할 수 있습니다.
 
 ## Project Overview
 
@@ -67,7 +67,7 @@ npm install
 npm run dev
 ```
 
-AI 분석을 쓰려면 서버 전용 환경 변수 `POTENS_API_KEY` 를 설정합니다. 이 값은 브라우저로 전달되지 않습니다. 설정하지 않아도 가상 예시로 모든 화면을 볼 수 있습니다.
+AI 분석은 별도 서비스의 코치 API를 서버에서 호출해 처리합니다. 이 저장소에는 API 키와 분석 지시문이 없고, 환경 변수 설정도 필요하지 않습니다. AI를 쓸 수 없는 경우에도 가상 예시로 모든 화면을 볼 수 있습니다.
 
 ## Portfolio Positioning
 
