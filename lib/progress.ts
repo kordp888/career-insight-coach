@@ -2,8 +2,7 @@ import type { StepKey } from "./site";
 import type { Workspace } from "./workspace";
 
 export function answeredCount(ws: Workspace): number {
-  const e = ws.experience;
-  return [e.problem, e.role, e.choice, e.reason, e.result].filter((v) => v.trim()).length;
+  return ws.experiences.filter(e=>e.title && (e.problem||e.action||e.choice||e.result)).length;
 }
 
 export function isDone(ws: Workspace, key: StepKey): boolean {
@@ -11,9 +10,9 @@ export function isDone(ws: Workspace, key: StepKey): boolean {
     case "industry": return Boolean(ws.industry);
     case "company": return Boolean(ws.company);
     case "job": return Boolean(ws.job);
-    case "experience": return answeredCount(ws) >= 3;
-    case "connect": return Object.keys(ws.connect).length > 0;
-    case "insight": return Boolean(ws.insight);
-    case "output": return Boolean(ws.resumeBullets || ws.letterDraft || ws.portfolio);
+    case "experience": return answeredCount(ws) > 0;
+    case "connect": return ws.connections.length > 0;
+    case "insight": return ws.insights.some(i=>i.decision==="accepted");
+    case "output": return Boolean(ws.outputs.resume || ws.outputs.letter || ws.outputs.portfolio);
   }
 }

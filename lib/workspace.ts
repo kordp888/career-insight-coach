@@ -1,106 +1,50 @@
 "use client";
-
 import { useSyncExternalStore } from "react";
-import { SAMPLE_TARGET } from "./samples";
-import type {
-  CompanyResult, ExperienceAnswers, ExperiencePart, ExperienceSummary, IndustryResult,
-  InsightResult, JobResult, LetterStructure, PortfolioBlocks, ResumeFields, Sourced, Target,
-} from "./types";
-
-/**
- * 데모 작업 공간. 이 브라우저의 localStorage 에만 저장한다. 서버로 보내지 않는다.
- */
-
-export interface Workspace {
-  target: Target;
-  industry?: Sourced<IndustryResult>;
-  company?: Sourced<CompanyResult>;
-  jd: string;
-  job?: Sourced<JobResult>;
-  experience: ExperienceAnswers;
-  experienceSummary?: Sourced<ExperienceSummary>;
-  connect: Record<string, ExperiencePart>;
-  insight?: Sourced<InsightResult>;
-  resume?: ResumeFields;
-  resumeBullets?: Sourced<string[]>;
-  letter?: LetterStructure;
-  letterDraft?: Sourced<string>;
-  portfolio?: Sourced<PortfolioBlocks>;
-}
-
-export const EMPTY_EXPERIENCE: ExperienceAnswers = { title: "", problem: "", role: "", choice: "", reason: "", result: "" };
-
-const DEFAULT: Workspace = {
-  target: { role: SAMPLE_TARGET.role, company: "", industry: "" },
-  jd: "",
-  experience: EMPTY_EXPERIENCE,
-  connect: {},
-};
-
-const KEY = "career-coach-workspace-v1";
-let state: Workspace = DEFAULT;
+import { SAMPLE_TARGET, SAMPLE_INDUSTRY, SAMPLE_COMPANY, SAMPLE_JOB, SAMPLE_JD, SAMPLE_EXPERIENCE, SAMPLE_INSIGHT } from "./samples";
+import { applyWorkspacePatch, emptyWorkspace, newExperience, parseWorkspace } from "./workspace-data";
+import type { CareerWorkspace } from "./types";
+export type Workspace = CareerWorkspace;
+const DEFAULT = emptyWorkspace();
+const KEY = "career-coach-workspace-v2";
+let state = DEFAULT;
 let loaded = false;
+let revision = 0;
+export const workspaceRevision = () => revision;
+let storageWarning = "";
 const listeners = new Set<() => void>();
-
+const emit = () => listeners.forEach(l => l());
+const key = (mode: CareerWorkspace["mode"]) => KEY + "-" + mode;
 function load() {
   if (loaded || typeof window === "undefined") return;
   loaded = true;
   try {
-    const raw = window.localStorage.getItem(KEY);
-    if (raw) state = { ...DEFAULT, ...(JSON.parse(raw) as Partial<Workspace>) };
-  } catch {
-    state = DEFAULT;
-  }
+    const mode = localStorage.getItem(KEY + "-mode") === "sample" ? "sample" : "actual";
+    const raw = localStorage.getItem(key(mode));
+    state = raw ? parseWorkspace(raw) : emptyWorkspace(mode);
+  } catch { state = emptyWorkspace(); storageWarning = "저장된 정보를 불러오지 못했습니다. 설정에서 내보낸 파일을 불러와 주세요."; }
 }
-
-function emit() {
-  for (const l of listeners) l();
-}
-
-function subscribe(listener: () => void) {
-  listeners.add(listener);
-  return () => listeners.delete(listener);
-}
-
-function getSnapshot(): Workspace {
-  load();
-  return state;
-}
-
-function getServerSnapshot(): Workspace {
-  return DEFAULT;
-}
-
-export function updateWorkspace(patch: Partial<Workspace>) {
-  load();
-  state = { ...state, ...patch };
-  try {
-    window.localStorage.setItem(KEY, JSON.stringify(state));
-  } catch {
-    /* 저장 공간이 없어도 이번 화면 흐름은 계속된다 */
-  }
+function persist() {
+  revision++;
+  try { localStorage.setItem(key(state.mode), JSON.stringify(state)); localStorage.setItem(KEY + "-mode", state.mode); storageWarning = ""; }
+  catch { storageWarning = "브라우저 저장 공간을 사용할 수 없습니다. 설정에서 데이터를 내보내 주세요."; }
   emit();
 }
-
+function subscribe(l: () => void) { listeners.add(l); return () => listeners.delete(l); }
+export function useWorkspace() { return useSyncExternalStore(subscribe, () => { load(); return state; }, () => DEFAULT); }
+export function useHydrated() { return useSyncExternalStore(subscribe, () => true, () => false); }
+export function useStorageWarning() { return useSyncExternalStore(subscribe, () => storageWarning, () => ""); }
+export function updateWorkspace(patch: Partial<CareerWorkspace>) { load(); state = applyWorkspacePatch(state, patch); persist(); }
+export function replaceWorkspace(next: CareerWorkspace) { state = parseWorkspace(JSON.stringify(next)); loaded = true; persist(); }
+export function switchToActual() { load(); try { const raw = localStorage.getItem(key("actual")); state = raw ? parseWorkspace(raw) : emptyWorkspace(); } catch { state = emptyWorkspace(); } persist(); }
+export function startSample() {
+  load();
+  const exp = { ...newExperience("sample-1"), ...SAMPLE_EXPERIENCE };
+  state = { ...emptyWorkspace("sample"), target: { ...SAMPLE_TARGET }, industry: { source: "sample", data: SAMPLE_INDUSTRY }, company: { source: "sample", data: SAMPLE_COMPANY }, companyReviewed: true, jd: SAMPLE_JD, job: { source: "sample", data: SAMPLE_JOB }, experiences: [exp], selectedExperienceIds: [exp.id], insights: [{ ...SAMPLE_INSIGHT, id: "sample-insight", story: "예시 경험에서 판단 기준을 구체화한 과정입니다.", experienceIds: [exp.id], decision: "pending" }] };
+  persist();
+}
 export function resetWorkspace() {
-  state = DEFAULT;
-  try {
-    window.localStorage.removeItem(KEY);
-  } catch {
-    /* 무시 */
-  }
+  revision++;
+  state = emptyWorkspace(); loaded = true;
+  try { for (const k of [key("actual"), key("sample"), KEY + "-mode", "career-coach-workspace-v1"]) localStorage.removeItem(k); storageWarning = ""; } catch { storageWarning = "브라우저 저장 정보를 삭제하지 못했습니다."; }
   emit();
-}
-
-export function useWorkspace(): Workspace {
-  return useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
-}
-
-/** 브라우저 상태를 읽기 시작했는지. 서버 렌더와 첫 화면에서는 false. */
-export function useHydrated(): boolean {
-  return useSyncExternalStore(
-    subscribe,
-    () => true,
-    () => false,
-  );
 }

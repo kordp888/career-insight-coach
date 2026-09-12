@@ -19,7 +19,8 @@ export function ResultArea({
 }) {
   if (status === "loading") return <LoadingCard message={loadingMessage} lines={4} />;
   if (status === "error") return <ErrorCard onAgain={onAgain} onEdit={onEdit} />;
-  if (status === "unavailable" && !hasResult) return <UnavailableCard onSample={onSample} />;
+  if (status === "limited") return <div role="alert" className="rounded-card bg-soft-orange p-6">요청이 많습니다. 잠시 후 다시 시도해주세요.</div>;
+  if (status === "unavailable") return <UnavailableCard onSample={onSample} />;
   if (!hasResult) return <EmptyCard {...empty} />;
   return <>{children}</>;
 }

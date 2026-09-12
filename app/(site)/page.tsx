@@ -54,7 +54,7 @@ export default function LandingPage() {
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:pb-28 lg:pt-20">
           <div>
             <p className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-[13px] font-semibold text-ink-2">
-              <Sparkles className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> AI 커리어 코칭 제품 컨셉
+              <Sparkles className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> 실제 AI 분석 기능을 사용할 수 있습니다.
             </p>
             <h1 className="mt-6 text-[36px] font-bold leading-[1.22] tracking-tight text-navy sm:text-[46px] lg:text-[44px] xl:text-[52px]">
               <span className="whitespace-nowrap">AI가 대신 쓰는 게 아니라,</span>
@@ -65,8 +65,8 @@ export default function LandingPage() {
               산업·기업·직무를 먼저 이해하고, 실제 경험과 판단 과정을 구조화해 직무와 연결되는 강점을 발견하도록 돕습니다.
             </p>
             <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <ButtonLink href="/demo" className="h-12 px-6 text-[16px]">
-                데모 체험하기 <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              <ButtonLink href="/coach" className="h-12 px-6 text-[16px]">
+                커리어 분석 시작하기 <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </ButtonLink>
               <ButtonLink href={SITE.github} external variant="secondary" className="h-12 px-6 text-[16px]">
                 <GithubMark /> GitHub
@@ -137,9 +137,9 @@ export default function LandingPage() {
       <section className="bg-canvas">
         <div className="mx-auto grid max-w-6xl items-center gap-12 px-5 py-20 sm:px-8 lg:grid-cols-[0.9fr_1.1fr] lg:py-24">
           <div>
-            <SectionTitle kicker="데모" title="질문에 답하다 보면 강점이 보입니다." desc="경험을 한 번에 적지 않고, 질문 하나씩 꺼내 정리합니다. 정리가 끝나면 직무와 이어지는 강점을 함께 찾습니다." />
-            <ButtonLink href="/demo" className="mt-8 h-12 px-6 text-[16px]">
-              데모에서 직접 해보기 <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <SectionTitle kicker="Career Workspace" title="질문에 답하다 보면 강점이 보입니다." desc="경험을 한 번에 적지 않고, 질문 하나씩 꺼내 정리합니다. 정리가 끝나면 직무와 이어지는 강점을 함께 찾습니다." />
+            <ButtonLink href="/coach" className="mt-8 h-12 px-6 text-[16px]">
+              커리어 분석 시작하기 <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </ButtonLink>
           </div>
           <div aria-hidden="true" className="relative space-y-4">
@@ -234,7 +234,7 @@ export default function LandingPage() {
             </span>
             <h2 className="mt-5 text-[24px] font-bold text-navy">공개 저장소</h2>
             <p className="mt-2 text-[16px] leading-relaxed text-ink-2">
-              공개 저장소에는 포트폴리오, 제품 개요, 템플릿 및 가상 예시만 포함합니다.
+              공개 저장소에는 웹앱 화면, 제품 개요, 템플릿과 예시 데이터가 포함됩니다.
             </p>
             <ButtonLink href={SITE.github} external variant="secondary" className="mt-6">
               GitHub에서 보기 <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -264,8 +264,8 @@ export default function LandingPage() {
             더 좋은 답을 발견해보세요.
           </h2>
           <div className="mt-8 flex flex-col justify-center gap-3 sm:flex-row">
-            <ButtonLink href="/demo" className="h-12 px-6 text-[16px]">
-              무료 데모 시작 <ArrowRight className="h-4 w-4" aria-hidden="true" />
+            <ButtonLink href="/coach" className="h-12 px-6 text-[16px]">
+              커리어 분석 시작하기 <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </ButtonLink>
             <a
               href={SITE.github}

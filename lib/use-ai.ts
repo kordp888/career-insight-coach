@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from "react";
+import {validResponse} from "./workspace-data";
+import {workspaceRevision} from "./workspace";
 
-export type AiStatus = "idle" | "loading" | "success" | "error" | "unavailable";
+export type AiStatus = "idle" | "loading" | "success" | "error" | "unavailable" | "limited";
 
 /** AI 라우트 하나를 부르는 훅. 화면은 status 만 보고 상태를 그린다. */
 export function useAiRequest<T>(url: string) {
@@ -17,6 +19,7 @@ export function useAiRequest<T>(url: string) {
       const ctrl = new AbortController();
       controller.current = ctrl;
       setStatus("loading");
+      const revision = workspaceRevision();
       try {
         const res = await fetch(url, {
           method: "POST",
@@ -25,11 +28,13 @@ export function useAiRequest<T>(url: string) {
           signal: ctrl.signal,
         });
         const data = (await res.json().catch(() => ({}))) as { result?: T; error?: string };
+        if(ctrl.signal.aborted || revision !== workspaceRevision()) { if(controller.current===ctrl)setStatus("idle"); return null; }
         if (res.status === 503 && data.error === "not_configured") {
           setStatus("unavailable");
           return null;
         }
-        if (!res.ok || !data.result) {
+        if (res.status === 429) { setStatus("limited"); return null; }
+        if (!res.ok || !data.result || !validResponse(url,payload,data.result)) {
           setStatus("error");
           return null;
         }
@@ -43,7 +48,7 @@ export function useAiRequest<T>(url: string) {
     [url],
   );
 
-  const reset = useCallback(() => setStatus("idle"), []);
+  const reset = useCallback(() => {controller.current?.abort();setStatus("idle");}, []);
   return { status, run, reset };
 }
 
@@ -55,7 +60,7 @@ function askStatus() {
   if (asked || typeof window === "undefined") return;
   asked = true;
   fetch("/api/status", { cache: "no-store" })
-    .then((r) => r.json())
+    .then((r) => { if(!r.ok)throw new Error("status");return r.json(); })
     .then((d: { ai?: boolean }) => {
       aiReady = Boolean(d.ai);
     })

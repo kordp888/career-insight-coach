@@ -8,7 +8,7 @@ import "server-only";
  */
 
 const COACH_URL = "https://dasion-app.vercel.app/api/coach";
-const TIMEOUT_MS = 55_000;
+const TIMEOUT_MS = 165_000;
 
 export type TaskName = "industry" | "company" | "job" | "experience" | "insight" | "document";
 
@@ -50,7 +50,7 @@ export async function aiConfigured(): Promise<boolean> {
   try {
     const res = await fetch(COACH_URL, { signal: AbortSignal.timeout(4000), cache: "no-store" });
     const data = (await res.json()) as { ai?: boolean };
-    cached = { value: Boolean(data.ai), at: Date.now() };
+    cached = { value: res.ok && data.ai === true, at: Date.now() };
   } catch {
     cached = { value: false, at: Date.now() };
   }

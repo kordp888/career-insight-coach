@@ -23,7 +23,7 @@ export function SourceBadge({ source }: { source: "sample" | "ai" }) {
   return source === "ai" ? (
     <span className="inline-flex items-center rounded-full bg-soft-purple px-2.5 py-1 text-xs font-semibold text-violet">AI 초안</span>
   ) : (
-    <span className="inline-flex items-center rounded-full bg-soft-orange px-2.5 py-1 text-xs font-semibold text-amber">가상 예시</span>
+    <span className="inline-flex items-center rounded-full bg-soft-orange px-2.5 py-1 text-xs font-semibold text-amber">예시 데이터</span>
   );
 }
 

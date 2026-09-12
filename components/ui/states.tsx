@@ -45,12 +45,12 @@ export function UnavailableCard({ onSample }: { onSample: () => void }) {
       <div className="flex items-start gap-3">
         <Info className="mt-0.5 h-5 w-5 shrink-0 text-amber" aria-hidden="true" />
         <div>
-          <p className="font-semibold text-ink">지금은 AI 연결이 준비되지 않았습니다.</p>
-          <p className="mt-1 text-[15px] text-ink-2">가상 예시로 흐름을 먼저 둘러보실 수 있습니다.</p>
+          <p className="font-semibold text-ink">현재 AI 분석을 사용할 수 없습니다.</p>
+          <p className="mt-1 text-[15px] text-ink-2">예시 데이터로 흐름을 먼저 둘러보실 수 있습니다.</p>
         </div>
       </div>
       <Button className="mt-5" variant="secondary" onClick={onSample}>
-        가상 예시 보기
+        예시로 둘러보기
       </Button>
     </div>
   );

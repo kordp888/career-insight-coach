@@ -37,7 +37,7 @@ export default function AboutPage() {
         {SITE.name}
       </h1>
       <p className="mt-4 text-[17px] leading-relaxed text-ink-2">
-        자소서를 대신 써주는 AI가 아니라, 산업·기업·직무를 이해하고 실제 경험에서 직무와 연결되는 인사이트를 발견하도록 돕는 AI 커리어 코칭 제품 컨셉입니다.
+        산업·기업·직무를 이해하고 실제 경험에서 직무와 연결되는 인사이트를 발견하도록 돕는 AI 커리어 코칭 웹앱입니다. 분석 결과를 직접 확인하고 수정할 수 있습니다.
       </p>
 
       <figure className="mt-10 overflow-hidden rounded-card-lg border border-line bg-canvas">
@@ -76,8 +76,8 @@ export default function AboutPage() {
       </div>
 
       <div className="mt-12 flex flex-col gap-3 sm:flex-row">
-        <ButtonLink href="/demo" className="h-12 px-6">
-          데모 체험하기 <ArrowRight className="h-4 w-4" aria-hidden="true" />
+        <ButtonLink href="/coach" className="h-12 px-6">
+          커리어 분석 시작하기 <ArrowRight className="h-4 w-4" aria-hidden="true" />
         </ButtonLink>
         <ButtonLink href={SITE.github} external variant="secondary" className="h-12 px-6">
           <GithubMark /> GitHub 보기

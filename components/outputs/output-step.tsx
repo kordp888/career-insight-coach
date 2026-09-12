@@ -7,5 +7,5 @@ export function OutputStepHeader() {
 }
 
 export function OutputStepFooter() {
-  return <StepFooter step="output" nextLabel="이력서부터 보기" nextHref="/demo/output/resume" />;
+  return <StepFooter step="output" nextLabel="이력서부터 보기" nextHref="/coach/output/resume" />;
 }

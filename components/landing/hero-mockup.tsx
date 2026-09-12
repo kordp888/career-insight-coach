@@ -11,7 +11,7 @@ const PROGRESS = [
   { label: "문서화", icon: FilePenLine, state: "todo" },
 ] as const;
 
-/** 히어로 오른쪽의 제품 화면. 실제 데모 화면의 축소판이며 장식이다. */
+/** 히어로 오른쪽의 제품 화면. 제품 화면의 축소판이며 장식이다. */
 export function HeroMockup() {
   return (
     <div aria-hidden="true" className="relative mx-auto w-full max-w-[640px] select-none">

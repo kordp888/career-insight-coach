@@ -10,33 +10,35 @@ import {
 import type { LucideIcon } from "lucide-react";
 import { Logo } from "@/components/layout/logo";
 import { DEMO_DISCLAIMER, TRUST_NOTES } from "@/lib/site";
+import {WorkspaceNotice} from "./workspace-notice";
+import {useWorkspace} from "@/lib/workspace";
 
 type NavItem = { href: string; label: string; icon: LucideIcon };
 
 const GROUPS: { title?: string; items: NavItem[] }[] = [
-  { items: [{ href: "/demo", label: "홈", icon: House }] },
+  { items: [{ href: "/coach", label: "홈", icon: House }] },
   {
     title: "분석",
     items: [
-      { href: "/demo/industry", label: "산업 분석", icon: ChartColumn },
-      { href: "/demo/company", label: "기업 분석", icon: Building },
-      { href: "/demo/job", label: "직무 분석", icon: FileText },
+      { href: "/coach/industry", label: "산업 분석", icon: ChartColumn },
+      { href: "/coach/company", label: "기업 분석", icon: Building },
+      { href: "/coach/job", label: "직무 분석", icon: FileText },
     ],
   },
   {
     title: "나의 경험",
     items: [
-      { href: "/demo/experience", label: "경험 정리", icon: UserRound },
-      { href: "/demo/connect", label: "역량 연결", icon: Link2 },
-      { href: "/demo/insight", label: "인사이트", icon: Lightbulb },
+      { href: "/coach/experience", label: "경험 정리", icon: UserRound },
+      { href: "/coach/connect", label: "역량 연결", icon: Link2 },
+      { href: "/coach/insight", label: "인사이트", icon: Lightbulb },
     ],
   },
   {
     title: "결과",
     items: [
-      { href: "/demo/output/resume", label: "이력서", icon: FileUser },
-      { href: "/demo/output/cover-letter", label: "자소서", icon: FilePenLine },
-      { href: "/demo/output/portfolio", label: "포트폴리오", icon: PanelsTopLeft },
+      { href: "/coach/output/resume", label: "이력서", icon: FileUser },
+      { href: "/coach/output/cover-letter", label: "자소서", icon: FilePenLine },
+      { href: "/coach/output/portfolio", label: "포트폴리오", icon: PanelsTopLeft },
     ],
   },
 ];
@@ -74,11 +76,11 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
 
       <div className="mt-8 space-y-0.5 border-t border-line pt-4">
         <Link
-          href="/demo/settings"
+          href="/coach/settings"
           onClick={onNavigate}
-          aria-current={pathname === "/demo/settings" ? "page" : undefined}
+          aria-current={pathname === "/coach/settings" ? "page" : undefined}
           className={`flex min-h-11 items-center gap-2.5 rounded-btn px-3 text-[15px] ${
-            pathname === "/demo/settings" ? "bg-soft-blue font-semibold text-brand" : "text-ink-2 hover:bg-canvas hover:text-ink"
+            pathname === "/coach/settings" ? "bg-soft-blue font-semibold text-brand" : "text-ink-2 hover:bg-canvas hover:text-ink"
           }`}
         >
           <Settings className="h-[18px] w-[18px]" aria-hidden="true" /> 설정
@@ -95,6 +97,7 @@ function NavList({ pathname, onNavigate }: { pathname: string; onNavigate?: () =
 }
 
 export function AppShell({ children }: { children: React.ReactNode }) {
+  const ws=useWorkspace();
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
 
@@ -111,7 +114,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         <div className="px-2 pb-6">
           <Logo />
         </div>
-        <nav aria-label="데모 메뉴" className="flex flex-1 flex-col">
+        <nav aria-label="커리어 메뉴" className="flex flex-1 flex-col">
           <NavList pathname={pathname} />
         </nav>
       </aside>
@@ -122,7 +125,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <button
             type="button"
             className="flex h-11 w-11 items-center justify-center rounded-btn text-ink"
-            aria-label="데모 메뉴 열기"
+            aria-label="커리어 메뉴 열기"
             aria-expanded={open}
             aria-controls="demo-drawer"
             onClick={() => setOpen(true)}
@@ -132,7 +135,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         </header>
 
         {open && (
-          <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="데모 메뉴">
+          <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true" aria-label="커리어 메뉴">
             <button type="button" aria-label="메뉴 닫기" className="absolute inset-0 bg-navy/30" onClick={() => setOpen(false)} />
             <nav id="demo-drawer" className="absolute right-0 top-0 flex h-full w-[82%] max-w-xs flex-col overflow-y-auto bg-white px-3 py-4">
               <div className="flex items-center justify-between px-2 pb-4">
@@ -147,7 +150,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         )}
 
         <main id="main" className="flex-1">
-          <div className="mx-auto w-full max-w-[960px] px-4 pb-10 pt-6 sm:px-8 sm:pt-10 lg:pb-16">{children}</div>
+          <div key={ws.mode} className="mx-auto w-full max-w-[960px] px-4 pb-10 pt-6 sm:px-8 sm:pt-10 lg:pb-16"><WorkspaceNotice />{children}</div>
         </main>
 
         <footer className="border-t border-line bg-white px-4 py-5 sm:px-8">

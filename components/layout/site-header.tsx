@@ -9,7 +9,7 @@ import { Logo } from "./logo";
 
 const NAV = [
   { href: "/#process", label: "제품 소개" },
-  { href: "/demo", label: "데모" },
+  { href: "/coach", label: "Career Workspace" },
   { href: "/about", label: "프로젝트" },
 ];
 
@@ -31,7 +31,7 @@ export function SiteHeader() {
           </a>
         </nav>
         <div className="hidden md:block">
-          <ButtonLink href="/demo">데모 체험하기</ButtonLink>
+          <ButtonLink href="/coach">커리어 분석 시작하기</ButtonLink>
         </div>
         <button
           type="button"
@@ -60,8 +60,8 @@ export function SiteHeader() {
               </a>
             </li>
           </ul>
-          <ButtonLink href="/demo" className="mt-3 w-full">
-            데모 체험하기
+          <ButtonLink href="/coach" className="mt-3 w-full">
+            커리어 분석 시작하기
           </ButtonLink>
         </nav>
       )}

@@ -3,9 +3,9 @@ import { ArrowRight } from "lucide-react";
 import { LetterPreview, PortfolioPreview, ResumePreview } from "./doc-previews";
 
 const DOCS = [
-  { href: "/demo/output/resume", title: "이력서", sub: "직무와 연결되는 핵심 경험을 명확하게 정리", preview: <ResumePreview /> },
-  { href: "/demo/output/cover-letter", title: "자소서", sub: "질문에 맞는 경험과 핵심 메시지 구조화", preview: <LetterPreview /> },
-  { href: "/demo/output/portfolio", title: "포트폴리오", sub: "문제 → 판단 → 실행 → 결과가 보이는 프로젝트 이야기", preview: <PortfolioPreview /> },
+  { href: "/coach/output/resume", title: "이력서", sub: "직무와 연결되는 핵심 경험을 명확하게 정리", preview: <ResumePreview /> },
+  { href: "/coach/output/cover-letter", title: "자소서", sub: "질문에 맞는 경험과 핵심 메시지 구조화", preview: <LetterPreview /> },
+  { href: "/coach/output/portfolio", title: "포트폴리오", sub: "문제 → 판단 → 실행 → 결과가 보이는 프로젝트 이야기", preview: <PortfolioPreview /> },
 ];
 
 export function OutputCards() {

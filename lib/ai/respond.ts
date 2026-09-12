@@ -8,10 +8,10 @@ import { ProviderError, runCoachTask, type TaskName } from "./provider";
 
 const WINDOW_MS = 10 * 60 * 1000;
 const MAX_REQUESTS = 30;
-const MAX_BODY_CHARS = 12_000;
+const MAX_BODY_CHARS = 240_000;
 const recent = new Map<string, number[]>();
 
-/** 인스턴스 메모리 기준의 가벼운 사용량 제한. 공개 데모에서 과도한 호출을 줄이는 용도다. */
+/** 인스턴스 메모리 기준의 가벼운 사용량 제한. 웹앱에서 과도한 호출을 줄이는 용도다. */
 function overLimit(ip: string): boolean {
   const now = Date.now();
   const kept = (recent.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
@@ -28,7 +28,8 @@ function reply(data: unknown, status = 200): Response {
 export async function runTask(request: Request, task: TaskName): Promise<Response> {
   const origin = request.headers.get("origin");
   const host = request.headers.get("host");
-  if (origin && host && new URL(origin).host !== host) return reply({ error: "forbidden" }, 403);
+  try { if (origin && host && new URL(origin).host !== host) return reply({ error: "forbidden" }, 403); }
+  catch { return reply({ error: "forbidden" }, 403); }
 
   const ip = (request.headers.get("x-forwarded-for") ?? "local").split(",")[0].trim();
   if (overLimit(ip)) return reply({ error: "busy" }, 429);

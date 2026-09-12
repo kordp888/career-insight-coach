@@ -9,13 +9,13 @@ import { StepProgress } from "@/components/dashboard/step-frame";
 import { STEPS } from "@/lib/site";
 import { isDone } from "@/lib/progress";
 import { SAMPLE_PERSON, SAMPLE_TARGET } from "@/lib/samples";
-import { updateWorkspace, useWorkspace } from "@/lib/workspace";
+import { startSample, updateWorkspace, useWorkspace } from "@/lib/workspace";
 
 export function HomeView() {
   const ws = useWorkspace();
   const router = useRouter();
   const { target } = ws;
-  const isSample = target.company === SAMPLE_TARGET.company && target.role === SAMPLE_TARGET.role;
+  const isSample = ws.mode === "sample";
 
   const setTarget = (patch: Partial<typeof target>) => updateWorkspace({ target: { ...target, ...patch } });
 
@@ -33,7 +33,7 @@ export function HomeView() {
           className="mt-8 grid gap-5 sm:grid-cols-2"
           onSubmit={(e) => {
             e.preventDefault();
-            router.push("/demo/industry");
+            router.push("/coach/industry");
           }}
         >
           <TextField id="role" label="지원 직무" value={target.role} onChange={(e) => setTarget({ role: e.target.value })} placeholder="예: AI Product Manager" autoComplete="off" />
@@ -45,16 +45,16 @@ export function HomeView() {
             <Button
               variant="ghost"
               className="h-12"
-              onClick={() => updateWorkspace({ target: { ...SAMPLE_TARGET } })}
+              onClick={startSample}
             >
-              <Sparkles className="h-4 w-4 text-brand" aria-hidden="true" /> 가상 데모 데이터로 채우기
+              <Sparkles className="h-4 w-4 text-brand" aria-hidden="true" /> 예시로 둘러보기
             </Button>
           </div>
         </form>
 
         {isSample && (
           <p className="mt-5 inline-flex flex-wrap items-center gap-2 rounded-[12px] bg-soft-orange px-3 py-2 text-[13px] text-ink-2">
-            <span className="font-semibold text-amber">가상 데모 데이터</span>
+            <span className="font-semibold text-amber">예시 데이터</span>
             {SAMPLE_PERSON} · {SAMPLE_TARGET.role} · {SAMPLE_TARGET.industry} · {SAMPLE_TARGET.company}
           </p>
         )}

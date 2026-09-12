@@ -1,159 +1,64 @@
 # AI Career Insight Coach
 
-> 자소서를 대신 써주는 AI가 아니라,
-> 지원할 곳을 먼저 이해하고 자신의 실제 경험에서
-> 직무와 연결되는 강점을 발견하도록 돕는 AI Career Coach.
+[웹앱 사용하기](https://career-insight-coach.vercel.app/coach) · [GitHub 저장소](https://github.com/kordp888/career-insight-coach)
+
+관심 산업, 기업, 실제 채용공고와 자신의 경험을 입력하고 AI 분석 결과를 확인하는 커리어 작업 공간입니다. 경험에서 직무와 연결되는 근거를 찾고, 직접 선택한 인사이트를 이력서·자기소개서·포트폴리오로 정리합니다.
 
 ![AI Career Insight Coach](assets/ai-career-insight-coach-overview.png)
 
-## Live Demo
+## 사용 순서
 
-**[career-insight-coach.vercel.app](https://career-insight-coach.vercel.app)**
+1. 관심 산업과 지원 직무를 입력해 산업 구조와 변화를 정리합니다.
+2. 기업명과 참고자료를 붙여넣어 기업 분석을 요청합니다.
+3. 채용공고 전체를 붙여넣어 업무, 역량, 경험 탐색 질문을 확인합니다.
+4. 경험을 1~10개 등록하고 AI의 추가 질문에 답하며 근거를 보완합니다.
+5. 직무 역량과 관련 경험의 연결 근거를 확인합니다.
+6. 인사이트를 사용, 수정, 제외 중에서 선택합니다.
+7. 선택한 경험과 인사이트로 문서를 작성하고 직접 수정합니다.
 
-산업·기업·직무 분석부터 경험 정리, 인사이트 발견, 이력서·자소서·포트폴리오까지 하나의 흐름으로 체험할 수 있는 AI 커리어 코칭 웹앱입니다.
+이력서는 항목별 문장 수정과 복사를 지원합니다. 자기소개서는 실제 질문과 글자 수를 입력하고 Writing Blueprint를 확인한 다음, 초안 작성을 눌러야 본문이 생성됩니다. 포트폴리오는 선택한 프로젝트를 문제, 판단, 실행, 결과 중심의 Case Study로 정리합니다.
 
-## Problem
+## 데이터와 AI 사용
 
-- AI가 바로 문장을 만들면 지원자마다 다른 경험이 비슷한 표현으로 바뀔 수 있습니다.
-- 직무를 충분히 이해하지 않은 채 자소서부터 쓰는 경우가 많습니다.
-- 실제 판단과 행동보다 문장을 그럴듯하게 만드는 데 집중하기 쉽습니다.
-- 지원자가 자기 경험 안에서 직무와 연결되는 강점을 스스로 찾기 어렵습니다.
+입력한 정보는 이 브라우저에 저장됩니다. 설정에서 JSON 파일 내보내기, 불러오기, 전체 삭제를 할 수 있습니다. 로그인과 데이터베이스는 사용하지 않습니다.
 
-## How It Works
+AI 분석 버튼을 누르면 입력 내용이 서버 AI 분석 API로 전달됩니다. 주민등록번호, 계좌번호, 비밀번호, API key를 넣지 마세요. 내보낸 파일에도 본인이 입력한 내용이 담기므로 안전하게 보관하세요.
 
-커리어코치는 AI에게 바로 자소서를 써달라고 요청하지 않습니다. 지원할 곳을 먼저 이해하고, 그 다음 내 경험에서 근거를 찾고, 마지막에 문서로 연결합니다.
+AI 분석이 실패하면 오류가 표시됩니다. 예시 데이터는 사용자가 **예시로 둘러보기**를 선택했을 때만 열리며, 실제 작업 공간과 별도로 저장됩니다. 예시 화면에는 예시 데이터 표시가 붙습니다.
 
-```text
-사용자
-  ↓
-커리어코치 웹앱
-  ↓
-서버 API
-  ↓
-AI 코치
-  ↓
-분석 결과
-  ↓
-사용자 확인·수정
-  ↓
-이력서 · 자기소개서 · 포트폴리오
-```
+분석은 입력된 정보와 AI 지식을 바탕으로 합니다. 실시간 시장 조사, 합격 가능성, 직무 적합도 점수를 제공하지 않습니다. 지원 전에 사실과 수치를 직접 확인하세요.
 
-### 실제 동작 흐름
+## 경로
 
-1. 사용자가 지원 직무, 기업, 채용공고와 자신의 경험을 입력합니다.
-2. 웹앱이 입력 내용을 서버 API로 전달합니다.
-3. 서버가 필요한 분석을 AI 코치에 요청합니다.
-4. AI가 산업·기업·직무와 사용자의 경험을 구조화합니다.
-5. 사용자가 분석 결과를 직접 확인하고 수정합니다.
-6. 확인한 내용을 이력서·자소서·포트폴리오로 연결합니다.
+작업 공간은 `/coach`입니다. 기존 `/demo/*` 링크는 대응하는 `/coach/*`로 이동합니다. `/api/status`는 AI 연결 상태를, `/api/version`은 배포 커밋과 환경을 표시합니다.
 
-## Product Flow
-
-1. 산업 분석
-2. 기업 분석
-3. 직무 / JD 분석
-4. 경험 정리
-5. 역량 연결
-6. 인사이트 발견
-7. 문서화: 이력서 · 자기소개서 · 포트폴리오
-
-면접 준비는 아직 구현하지 않았습니다. [Roadmap](#roadmap)에 있습니다.
-
-## Architecture
-
-내부 프롬프트, 평가 기준, 승인 로직은 공개하지 않습니다. 구조만 보여드립니다.
-
-```text
-[Browser]
-사용자 입력
-   │
-   ├── 진행 상태 저장 → localStorage
-   │
-   ▼
-[Next.js Web App]
-화면 / UX
-   │
-   ▼
-[Server API]
-입력 확인 / AI 요청 전달
-   │
-   ▼
-[AI Coach]
-분석 / 경험 연결 / 초안 생성
-   │
-   ▼
-[Server API]
-   │
-   ▼
-[Web App]
-사용자 확인 / 수정 / 최종 활용
-```
-
-### Why This Architecture?
-
-- AI 결과를 정답으로 취급하지 않습니다. 사용자가 직접 확인하고 수정합니다.
-- AI 연결을 브라우저에 직접 노출하지 않습니다. 요청은 서버를 거칩니다.
-- 진행 상태는 브라우저에 저장합니다. 같은 브라우저에서 이어서 작업할 수 있습니다.
-- AI 없이도 전체 흐름을 확인할 수 있습니다. 가상 예시 데이터를 제공합니다.
-- 공개 저장소에는 실제 지원자의 개인정보와 비공개 제품 로직을 포함하지 않습니다.
-
-## Tech Stack
-
-- Next.js
-- React
-- TypeScript
-- Tailwind CSS
-- AI API
-- Vercel
-- Browser localStorage
-
-## 웹앱 로컬 실행
+## 로컬 실행
 
 ```bash
-npm install
+npm ci
 npm run dev
 ```
 
-AI 분석은 서버 API를 거쳐 처리합니다. 이 저장소에는 API 키와 분석 지시문이 없고, 환경 변수 설정도 필요하지 않습니다. AI를 쓸 수 없는 경우에도 가상 예시로 모든 화면을 볼 수 있습니다.
+```bash
+npm test
+npm run lint
+npm run build
+```
 
-## My Role
+공개 저장소에는 제품 화면, 공개 인터페이스, 템플릿과 가상의 예시만 포함합니다. 실제 지원자 자료나 AI API 키를 커밋하지 않습니다.
 
-- AI Product Planning
-- Problem Definition
-- Career UX Flow Design
-- AI Coaching Flow Design
-- Prototype Development
-- Web Deployment
+## 사용 기술
 
-## Learning Context
+Next.js, React, TypeScript, Tailwind CSS, Vercel, browser localStorage.
 
-SeSAC AI PM 과정에서 학습한 문제정의, 산업·기업·직무 분석, 사용자 관점의 제품 설계 방법론을 바탕으로 개인적으로 확장 설계한 프로젝트입니다.
+## 제작 범위와 학습 배경
 
-> Inspired by methodologies learned through the SeSAC AI PM Program. Independently designed and developed.
+문제 정의, 제품 기획, 사용자 경험 설계, 웹앱 구현과 배포를 담당한 개인 프로젝트입니다. SeSAC AI PM 과정에서 배운 산업·기업·직무 분석과 사용자 관점의 제품 설계 방법을 확장했습니다.
 
-## Public Resources
+[제품 개요](docs/product-overview.md) · [경험 정리 템플릿](templates/experience-journal.md) · [포트폴리오 템플릿](templates/portfolio-case-study.md)
 
-| 경로 | 내용 |
-|---|---|
-| `assets/` | 프로젝트 소개 이미지 |
-| `docs/product-overview.md` | 공개 가능한 제품 개요 |
-| `templates/experience-journal.md` | 경험 정리 템플릿 |
-| `templates/portfolio-case-study.md` | 포트폴리오 Case Study 템플릿 |
-| `examples/fictional-candidate.md` | 가상 지원자 예시 |
-| `app/`, `components/`, `lib/` | 공개 웹앱(Next.js) 화면과 가상 데모 데이터 |
-
-## Demo Data Policy
-
-공개 예시는 실제 지원자의 개인정보가 아닌 fictional sample data만 사용합니다. 이 저장소에는 실제 지원자의 이력서, 자기소개서, 연락처, 기업별 지원 기록을 포함하지 않습니다.
-
-## Roadmap
-
-- 면접 준비 기능은 아직 구현하지 않았습니다.
-- BYOK(Bring Your Own Key)는 아직 구현하지 않았습니다. 사용자가 직접 AI provider와 API 키를 연결하는 방식을 검토 중입니다.
-
-자세한 계획은 [ROADMAP.md](ROADMAP.md)에 있습니다.
+면접 준비와 BYOK는 구현하지 않았습니다. [향후 계획](ROADMAP.md)을 참고하세요.
 
 ## License
 
-[MIT License](LICENSE). 이 저장소에 실제로 포함된 공개 파일에 한해 적용됩니다.
+[MIT License](LICENSE). 이 저장소에 포함된 공개 파일에 한해 적용됩니다.
