@@ -1,102 +1,64 @@
 # AI Career Insight Coach
 
-> 자소서를 대신 써주는 AI가 아니라,
-> 산업·기업·직무를 이해하고 자신의 실제 경험에서
-> 직무와 연결되는 인사이트를 발견하도록 돕는 AI Career Coach.
+[웹앱 사용하기](https://career-insight-coach.vercel.app/coach) · [GitHub 저장소](https://github.com/kordp888/career-insight-coach)
 
-An AI career coaching concept focused on discovering job-relevant insights from real experience rather than generating generic application documents.
+관심 산업, 기업, 실제 채용공고와 자신의 경험을 입력하고 AI 분석 결과를 확인하는 커리어 작업 공간입니다. 경험에서 직무와 연결되는 근거를 찾고, 직접 선택한 인사이트를 이력서·자기소개서·포트폴리오로 정리합니다.
 
 ![AI Career Insight Coach](assets/ai-career-insight-coach-overview.png)
 
-## Project Overview
+## 사용 순서
 
-기존 생성형 AI 기반 취업 도구는 빠르게 문장을 만들 수 있지만, 지원자의 실제 경험과 판단 과정이 충분히 드러나지 않으면 결과물이 비슷해질 수 있습니다.
+1. 관심 산업과 지원 직무를 입력해 산업 구조와 변화를 정리합니다.
+2. 기업명과 참고자료를 붙여넣어 기업 분석을 요청합니다.
+3. 채용공고 전체를 붙여넣어 업무, 역량, 경험 탐색 질문을 확인합니다.
+4. 경험을 1~10개 등록하고 AI의 추가 질문에 답하며 근거를 보완합니다.
+5. 직무 역량과 관련 경험의 연결 근거를 확인합니다.
+6. 인사이트를 사용, 수정, 제외 중에서 선택합니다.
+7. 선택한 경험과 인사이트로 문서를 작성하고 직접 수정합니다.
 
-이 프로젝트는 문서 자동 생성보다 아래 흐름에 초점을 둡니다.
+이력서는 항목별 문장 수정과 복사를 지원합니다. 자기소개서는 실제 질문과 글자 수를 입력하고 Writing Blueprint를 확인한 다음, 초안 작성을 눌러야 본문이 생성됩니다. 포트폴리오는 선택한 프로젝트를 문제, 판단, 실행, 결과 중심의 Case Study로 정리합니다.
 
-**산업 분석 → 기업 분석 → 직무/JD 분석 → 경험 정리 → 직무와 경험 연결 → 인사이트 발견 → 문서 구조화**
+## 데이터와 AI 사용
 
-최종적으로 이력서, 자기소개서, 포트폴리오, 면접 준비에 활용할 수 있는 개인화된 재료를 만드는 것을 목표로 합니다.
+입력한 정보는 이 브라우저에 저장됩니다. 설정에서 JSON 파일 내보내기, 불러오기, 전체 삭제를 할 수 있습니다. 로그인과 데이터베이스는 사용하지 않습니다.
 
-## Why This Project
+AI 분석 버튼을 누르면 입력 내용이 서버 AI 분석 API로 전달됩니다. 주민등록번호, 계좌번호, 비밀번호, API key를 넣지 마세요. 내보낸 파일에도 본인이 입력한 내용이 담기므로 안전하게 보관하세요.
 
-- 비슷한 AI 문장으로 인한 차별성 저하
-- 직무 이해 없이 자기소개서부터 작성하는 문제
-- 경험의 맥락과 판단이 사라지는 문제
-- 지원자가 자신의 강점을 스스로 설명하기 어려운 문제
+AI 분석이 실패하면 오류가 표시됩니다. 예시 데이터는 사용자가 **예시로 둘러보기**를 선택했을 때만 열리며, 실제 작업 공간과 별도로 저장됩니다. 예시 화면에는 예시 데이터 표시가 붙습니다.
 
-이 프로젝트의 가설은 한 문장입니다.
+분석은 입력된 정보와 AI 지식을 바탕으로 합니다. 실시간 시장 조사, 합격 가능성, 직무 적합도 점수를 제공하지 않습니다. 지원 전에 사실과 수치를 직접 확인하세요.
 
-> **AI가 답을 대신 만드는 것보다, 사용자가 자기 경험에서 더 좋은 답을 발견하도록 돕는 것이 더 가치 있다.**
+## 경로
 
-## Public Concept Flow
+작업 공간은 `/coach`입니다. 기존 `/demo/*` 링크는 대응하는 `/coach/*`로 이동합니다. `/api/status`는 AI 연결 상태를, `/api/version`은 배포 커밋과 환경을 표시합니다.
 
-1. 산업 분석
-2. 기업 분석
-3. 직무/JD 분석
-4. 경험 정리
-5. 직무와 경험 연결
-6. 인사이트 발견
-7. 문서 구조화
-8. Resume / Cover Letter / Portfolio / Interview 활용
+## 로컬 실행
 
-이 저장소는 위 흐름을 이해할 수 있는 포트폴리오, 공개 템플릿, 가상 예시만 제공합니다.
+```bash
+npm ci
+npm run dev
+```
 
-## Public Resources
+```bash
+npm test
+npm run lint
+npm run build
+```
 
-| 경로 | 내용 |
-|---|---|
-| `assets/` | 프로젝트 소개 이미지 |
-| `docs/product-overview.md` | 공개 가능한 제품 개요 |
-| `templates/experience-journal.md` | 경험 정리 템플릿 |
-| `templates/portfolio-case-study.md` | 포트폴리오 Case Study 템플릿 |
-| `examples/fictional-candidate.md` | 가상 지원자 예시 |
-| `ROADMAP.md` | 공개 로드맵 |
+공개 저장소에는 제품 화면, 공개 인터페이스, 템플릿과 가상의 예시만 포함합니다. 실제 지원자 자료나 AI API 키를 커밋하지 않습니다.
 
-## Portfolio Positioning
+## 사용 기술
 
-**Role**  
-AI Product Planning · Career UX Flow · AI Coaching Experience Design · Prototype Planning
+Next.js, React, TypeScript, Tailwind CSS, Vercel, browser localStorage.
 
-**Problem**  
-AI가 지원 문서를 바로 생성하면 지원자의 경험과 판단이 평준화될 수 있다.
+## 제작 범위와 학습 배경
 
-**Product Decision**  
-문서 생성을 출발점으로 두지 않고, 산업·기업·직무 이해와 경험 탐색을 선행하는 코칭 흐름으로 재설계했다.
+문제 정의, 제품 기획, 사용자 경험 설계, 웹앱 구현과 배포를 담당한 개인 프로젝트입니다. SeSAC AI PM 과정에서 배운 산업·기업·직무 분석과 사용자 관점의 제품 설계 방법을 확장했습니다.
 
-**Expected Outputs**
+[제품 개요](docs/product-overview.md) · [경험 정리 템플릿](templates/experience-journal.md) · [포트폴리오 템플릿](templates/portfolio-case-study.md)
 
-- Resume bullets
-- Cover-letter writing blueprint
-- Portfolio case study
-- Interview story bank
-
-## Learning Context
-
-SeSAC AI PM 과정에서 학습한 문제정의, 산업·기업·직무 분석, 사용자 관점의 제품 설계 방법론을 바탕으로 개인적으로 확장 설계한 프로젝트입니다.
-
-> Inspired by methodologies learned through the SeSAC AI PM Program. Independently designed and developed.
-
-## Demo Data Policy
-
-공개 예시는 실제 지원자의 개인정보가 아닌 fictional sample data만 사용합니다.
-
-이 저장소에는 실제 지원자의 이력서, 자기소개서, 연락처, 기업별 지원 기록을 포함하지 않습니다.
-
-## Roadmap: BYOK
-
-향후 공개 데모에서는 BYOK(Bring Your Own Key) 방식을 옵션으로 검토합니다.
-
-- 사용자가 원하는 LLM provider를 직접 선택
-- 사용자가 본인의 API 사용량과 비용을 직접 관리
-- 기본 공개 프로젝트는 유료 API 없이도 구조와 예시를 확인 가능
-
-현재 공개본은 특정 유료 API 사용을 요구하지 않습니다. 자세한 계획은 [ROADMAP.md](ROADMAP.md)에 있습니다.
-
-## Public Repository Scope
-
-이 저장소는 포트폴리오 및 공개 데모 레이어입니다. 제품의 비공개 운영 구현은 포함하지 않습니다.
+면접 준비와 BYOK는 구현하지 않았습니다. [향후 계획](ROADMAP.md)을 참고하세요.
 
 ## License
 
-[MIT License](LICENSE). 이 저장소에 실제로 포함된 공개 파일에 한해 적용됩니다.
+[MIT License](LICENSE). 이 저장소에 포함된 공개 파일에 한해 적용됩니다.

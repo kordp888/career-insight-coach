@@ -1,0 +1,68 @@
+@import "tailwindcss";
+
+/*
+ * 디자인 토큰. 흰색, 남색, 파랑이 기본 언어다.
+ * 민트·보라·주황은 옅은 배경으로만 쓰고, 그 위 글자색은 흰 바탕 대비 4.5:1 이상으로 골랐다.
+ */
+@theme {
+  --color-canvas: #f8fbff;
+  --color-surface: #ffffff;
+  --color-brand: #1565f9;
+  --color-brand-strong: #0c4fdb;
+  --color-navy: #0b1f3a;
+  --color-ink: #142033;
+  --color-ink-2: #3e4a5c;
+  --color-ink-3: #5f6b7a;
+  --color-line: #e4ebf4;
+  --color-line-strong: #cfdbea;
+  --color-soft-blue: #edf5ff;
+  --color-soft-mint: #eefbf7;
+  --color-soft-purple: #f5f0ff;
+  --color-soft-orange: #fff6ea;
+  --color-soft-danger: #fff1f2;
+  --color-mint: #0a7466;
+  --color-violet: #5b3fc4;
+  --color-amber: #8a5a00;
+  --color-danger: #b4232f;
+
+  --radius-card-lg: 24px;
+  --radius-card: 18px;
+  --radius-input: 14px;
+  --radius-btn: 12px;
+
+  --shadow-soft: 0 8px 30px rgba(20, 50, 90, 0.06);
+
+  --font-sans: "Pretendard", -apple-system, BlinkMacSystemFont, "Apple SD Gothic Neo", "Noto Sans KR",
+    "Malgun Gothic", system-ui, sans-serif;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--color-surface);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+  -webkit-font-smoothing: antialiased;
+}
+
+:focus-visible {
+  outline: 3px solid var(--color-brand);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}
