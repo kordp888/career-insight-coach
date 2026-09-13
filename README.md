@@ -55,7 +55,7 @@ Next.js, React, TypeScript, Tailwind CSS, Vercel, browser localStorage.
 
 문제 정의, 제품 기획, 사용자 경험 설계, 웹앱 구현과 배포를 담당한 개인 프로젝트입니다. SeSAC AI PM 과정에서 배운 산업·기업·직무 분석과 사용자 관점의 제품 설계 방법을 확장했습니다.
 
-[제품 개요](docs/product-overview.md) · [경험 정리 템플릿](templates/experience-journal.md) · [포트폴리오 템플릿](templates/portfolio-case-study.md)
+[제품 설계 정본](docs/product/README.md) · [제품 개요](docs/product-overview.md) · [경험 정리 템플릿](templates/experience-journal.md) · [포트폴리오 템플릿](templates/portfolio-case-study.md)
 
 면접 준비와 BYOK는 구현하지 않았습니다. [향후 계획](ROADMAP.md)을 참고하세요.
 

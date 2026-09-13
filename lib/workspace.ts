@@ -10,6 +10,7 @@ let state = DEFAULT;
 let loaded = false;
 let revision = 0;
 export const workspaceRevision = () => revision;
+let lastSavedAt = 0;
 let storageWarning = "";
 const listeners = new Set<() => void>();
 const emit = () => listeners.forEach(l => l());
@@ -25,7 +26,7 @@ function load() {
 }
 function persist() {
   revision++;
-  try { localStorage.setItem(key(state.mode), JSON.stringify(state)); localStorage.setItem(KEY + "-mode", state.mode); storageWarning = ""; }
+  try { localStorage.setItem(key(state.mode), JSON.stringify(state)); localStorage.setItem(KEY + "-mode", state.mode); lastSavedAt = Date.now(); storageWarning = ""; }
   catch { storageWarning = "브라우저 저장 공간을 사용할 수 없습니다. 설정에서 데이터를 내보내 주세요."; }
   emit();
 }
@@ -33,6 +34,7 @@ function subscribe(l: () => void) { listeners.add(l); return () => listeners.del
 export function useWorkspace() { return useSyncExternalStore(subscribe, () => { load(); return state; }, () => DEFAULT); }
 export function useHydrated() { return useSyncExternalStore(subscribe, () => true, () => false); }
 export function useStorageWarning() { return useSyncExternalStore(subscribe, () => storageWarning, () => ""); }
+export function useLastSavedAt() { return useSyncExternalStore(subscribe, () => lastSavedAt, () => 0); }
 export function updateWorkspace(patch: Partial<CareerWorkspace>) { load(); state = applyWorkspacePatch(state, patch); persist(); }
 export function replaceWorkspace(next: CareerWorkspace) { state = parseWorkspace(JSON.stringify(next)); loaded = true; persist(); }
 export function switchToActual() { load(); try { const raw = localStorage.getItem(key("actual")); state = raw ? parseWorkspace(raw) : emptyWorkspace(); } catch { state = emptyWorkspace(); } persist(); }
@@ -45,6 +47,6 @@ export function startSample() {
 export function resetWorkspace() {
   revision++;
   state = emptyWorkspace(); loaded = true;
-  try { for (const k of [key("actual"), key("sample"), KEY + "-mode", "career-coach-workspace-v1"]) localStorage.removeItem(k); storageWarning = ""; } catch { storageWarning = "브라우저 저장 정보를 삭제하지 못했습니다."; }
+  try { for (const k of [key("actual"), key("sample"), KEY + "-mode", "career-coach-workspace-v1"]) localStorage.removeItem(k); lastSavedAt = Date.now(); storageWarning = ""; } catch { storageWarning = "브라우저 저장 정보를 삭제하지 못했습니다."; }
   emit();
 }

@@ -1,12 +1,13 @@
 "use client";
 import {useState} from "react";
 import Link from "next/link";
+import {CheckCircle2,CircleDashed} from "lucide-react";
 import {Button} from "@/components/ui/button";
 import {TextArea,TextField} from "@/components/ui/field";
 import {AiFeedback,showResult} from "@/components/ui/ai-feedback";
 import {CopyButton} from "./doc-tools";
 import {useWorkspace,updateWorkspace} from "@/lib/workspace";
-import {analysisPayload,approvedInsights} from "@/lib/workspace-data";
+import {analysisPayload,approvedInsights,documentRequirements} from "@/lib/workspace-data";
 import {useAiRequest} from "@/lib/use-ai";
 import type {Blueprint,CaseStudy,DocKind,ResumeSections} from "@/lib/types";
 type DocumentResult={kind:DocKind;stage?:string;sections?:ResumeSections;blueprint?:Blueprint;draft?:string;blocks?:CaseStudy};
@@ -17,7 +18,7 @@ export function WorkspaceOutput({kind}:{kind:DocKind}){
  const ws=useWorkspace();const ai=useAiRequest<DocumentResult>("/api/generate/document");
  const [lastStage,setLastStage]=useState<"blueprint"|"draft">("blueprint");const [project,setProject]=useState("");
  const selected=ws.experiences.filter(e=>ws.selectedExperienceIds.includes(e.id));const chosen=selected.find(e=>e.id===project)??selected[0];
- const accepted=approvedInsights(ws,true);const ready=Boolean(ws.job)&&selected.length>0&&accepted.length>0&&(!ws.company||ws.companyReviewed);
+ const accepted=approvedInsights(ws,true);const requirements=documentRequirements(ws,kind);const ready=requirements.every(item=>item.done);
  const output=ws.outputs;
  const run=async(stage:"blueprint"|"draft"="draft")=>{
   setLastStage(stage);const base=analysisPayload(ws,true);
@@ -34,7 +35,11 @@ export function WorkspaceOutput({kind}:{kind:DocKind}){
  <section className="space-y-4 rounded-card-lg border border-line bg-white p-5 sm:p-7"><h2 className="text-lg font-bold">문서에 사용할 경험</h2><div className="flex flex-wrap gap-3">{ws.experiences.map(e=><label key={e.id} className="flex min-h-11 items-center gap-2 rounded-btn bg-canvas px-3"><input type="checkbox" checked={ws.selectedExperienceIds.includes(e.id)} onChange={()=>toggle(e.id)}/>{e.title||"이름 없는 경험"}</label>)}</div>
  <p className="text-sm text-ink-3">사용 선택한 인사이트: {accepted.map(i=>i.strength).join(" · ")||"없음"}</p>
  {ws.company&&!ws.companyReviewed&&<label className="flex gap-2"><input type="checkbox" onChange={e=>updateWorkspace({companyReviewed:e.target.checked})}/>기업 분석 결과를 확인했으며 문서 작성에 사용하는 데 동의합니다.</label>}
- {!ready&&<p className="text-sm text-danger">JD 분석, 경험 선택, 인사이트 사용 선택과 기업 분석 확인을 완료해 주세요. <Link className="underline" href="/coach/insight">인사이트 확인</Link></p>}
+ <section className="rounded-card border border-line bg-canvas p-4" aria-labelledby={`document-requirements-${kind}`}>
+ <h3 id={`document-requirements-${kind}`} className="text-sm font-bold text-navy">생성 전 확인</h3>
+ <ul className="mt-3 grid gap-2 text-sm sm:grid-cols-2">{requirements.map(item=><li key={item.id} className={`flex items-center gap-2 ${item.done?"text-mint":"text-ink-3"}`}>{item.done?<CheckCircle2 className="h-4 w-4 shrink-0" aria-hidden="true"/>:<CircleDashed className="h-4 w-4 shrink-0" aria-hidden="true"/>}{item.done||!item.href?<span>{item.label}</span>:<Link className="font-semibold underline underline-offset-4" href={item.href}>{item.label}</Link>}</li>)}</ul>
+ {!ready&&<p role="status" className="mt-3 text-sm text-ink-2">완료되지 않은 항목을 확인하면 생성 버튼이 활성화됩니다.</p>}
+ </section>
  {kind==="resume"&&<div className="grid gap-4 sm:grid-cols-2"><TextArea id="profile-education" label="교육 (선택, 직접 입력)" value={ws.profile.education} maxLength={3000} onChange={e=>updateWorkspace({profile:{...ws.profile,education:e.target.value}})}/><TextArea id="profile-technologies" label="기술 (선택, 직접 입력)" value={ws.profile.technologies} maxLength={3000} onChange={e=>updateWorkspace({profile:{...ws.profile,technologies:e.target.value}})}/></div>}
  {kind==="portfolio"&&<label className="block space-y-2"><span className="font-semibold">Case Study 프로젝트</span><select aria-label="Case Study 프로젝트" className="min-h-12 w-full rounded-input border border-line p-3" value={chosen?.id??""} onChange={e=>{setProject(e.target.value);updateWorkspace({outputs:{...output,portfolio:undefined}});}}>{selected.map(e=><option key={e.id} value={e.id}>{e.title}</option>)}</select></label>}
  {kind!=="letter"&&<Button disabled={!ready||ai.status==="loading"} onClick={()=>void run()}>{titles[kind]} 생성하기</Button>}

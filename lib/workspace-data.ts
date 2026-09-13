@@ -1,4 +1,4 @@
-import type { CareerWorkspace, InventoryExperience } from "./types";
+import type { CareerWorkspace, DocKind, InventoryExperience } from "./types";
 
 export const EXPERIENCE_FIELDS = ["title", "period", "situation", "problem", "role", "action", "choice", "reason", "result", "learning", "evidence", "technologies", "research"] as const;
 export function newExperience(id: string): InventoryExperience {
@@ -73,4 +73,23 @@ export function analysisPayload(ws: CareerWorkspace, selected = false) {
 }
 export function approvedInsights(ws: CareerWorkspace,selected=false){
   return ws.insights.filter(i=>i.decision==="accepted"&&(!selected||(i.experienceIds.length>0&&i.experienceIds.every(id=>ws.selectedExperienceIds.includes(id)))));
+}
+
+export interface DocumentRequirement {
+  id: "job" | "experience" | "insight" | "company" | "question";
+  label: string;
+  done: boolean;
+  href?: string;
+}
+
+export function documentRequirements(ws: CareerWorkspace, kind: DocKind): DocumentRequirement[] {
+  const selected = ws.experiences.filter(e=>ws.selectedExperienceIds.includes(e.id));
+  const requirements: DocumentRequirement[] = [
+    {id:"job",label:"JD 분석 완료",done:Boolean(ws.job),href:"/coach/job"},
+    {id:"experience",label:"문서에 사용할 경험 선택",done:selected.length>0,href:"/coach/experience"},
+    {id:"insight",label:"문서에 사용할 인사이트 선택",done:approvedInsights(ws,true).length>0,href:"/coach/insight"},
+  ];
+  if (ws.company) requirements.push({id:"company",label:"기업 분석 사용 확인",done:ws.companyReviewed,href:"/coach/company"});
+  if (kind === "letter") requirements.push({id:"question",label:"자기소개서 질문 입력",done:Boolean(ws.question.trim())});
+  return requirements;
 }
