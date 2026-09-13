@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {emptyWorkspace,newExperience,parseWorkspace,applyWorkspacePatch,analysisPayload,validResponse} from "../lib/workspace-data.ts";
+import {emptyWorkspace,newExperience,parseWorkspace,applyWorkspacePatch,analysisPayload,documentRequirements,validResponse} from "../lib/workspace-data.ts";
 const fixture=()=>({...emptyWorkspace(),experiences:[newExperience("a"),newExperience("b")],selectedExperienceIds:["a","b"],insights:[{id:"i",strength:"기록",evidence:"작업 기록",roleLink:"운영",story:"작업을 기록했습니다.",experienceIds:["a"],competencies:["정리"],decision:"accepted"}]});
 test("actual workspace starts empty without sample data",()=>{const ws=emptyWorkspace();assert.equal(ws.mode,"actual");assert.equal(ws.target.role,"");assert.equal(ws.experiences.length,0);assert.deepEqual(ws.outputs,{});});
 test("JSON round trip preserves user inputs",()=>{const ws=fixture();ws.experiences[0].title="내 경험";assert.deepEqual(parseWorkspace(JSON.stringify(ws)),ws);});
@@ -14,3 +14,24 @@ test("experience changes clear stale insights and documents",()=>{const ws=fixtu
 test("editing analysis clears dependent results",()=>{const ws=fixture();ws.outputs={letter:"이전 초안"};const next=applyWorkspacePatch(ws,{job:{source:"ai",data:{summary:"직무",responsibilities:[],core:[],preferred:[],perspective:[]}}});assert.deepEqual(next.insights,[]);assert.deepEqual(next.outputs,{});});
 test("company edits retain completed industry analysis",()=>{const ws=fixture();ws.industry={source:"ai",data:{structure:"구조",changes:[],impact:"영향",details:[]}};const next=applyWorkspacePatch(ws,{target:{...ws.target,company:"다른 회사"}});assert.deepEqual(next.industry,ws.industry);});
 test("public response shapes reject incomplete AI results",()=>{assert.equal(validResponse("/api/analyze/industry",{},{}),false);assert.equal(validResponse("/api/analyze/industry",{},{structure:"구조",changes:[],impact:"영향",details:[]}),true);assert.equal(validResponse("/api/generate/document",{kind:"letter",stage:"draft"},{kind:"letter",stage:"draft",draft:"초안"}),true);assert.equal(validResponse("/api/generate/document",{kind:"resume"},{kind:"resume",sections:[]}),false);});
+test("document requirements explain every missing prerequisite",()=>{
+ const ws=fixture();
+ assert.deepEqual(documentRequirements(ws,"resume").map(({id,done})=>({id,done})),[
+  {id:"job",done:false},{id:"experience",done:true},{id:"insight",done:true},
+ ]);
+ ws.job={source:"ai",data:{summary:"직무",responsibilities:[],core:[],preferred:[],perspective:[]}};
+ ws.company={source:"ai",data:{overview:"회사",business:"사업",product:"제품",direction:"방향",roleLink:"연결"}};
+ assert.equal(documentRequirements(ws,"resume").find(item=>item.id==="company")?.done,false);
+ ws.companyReviewed=true;
+ assert.equal(documentRequirements(ws,"resume").every(item=>item.done),true);
+ const letter=documentRequirements(ws,"letter");
+ assert.equal(letter.find(item=>item.id==="question")?.done,false);
+ ws.question="지원 동기를 작성해 주세요.";
+ assert.equal(documentRequirements(ws,"letter").every(item=>item.done),true);
+});
+test("insight requirement only accepts insights backed by selected experiences",()=>{
+ const ws=fixture();
+ ws.job={source:"ai",data:{summary:"직무",responsibilities:[],core:[],preferred:[],perspective:[]}};
+ ws.selectedExperienceIds=["b"];
+ assert.equal(documentRequirements(ws,"resume").find(item=>item.id==="insight")?.done,false);
+});
