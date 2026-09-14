@@ -1,0 +1,196 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", Pretendard, system-ui, "Apple SD Gothic Neo", sans-serif;
+    color: #1d1d1f;
+    background-color: #f5f5f7;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  /* Apple Design System Color Tokens - Custom Slate Indigo & Soft Coral Rose Palette */
+  .bg-apple-canvas {
+    background-color: #f5f5f7;
+  }
+  .bg-apple-surface {
+    background-color: #ffffff;
+  }
+  .text-apple-main {
+    color: #1d1d1f;
+  }
+  .text-apple-muted {
+    color: #6e6e73;
+  }
+  .text-apple-subtle {
+    color: #8e8e93;
+  }
+  .text-apple-link {
+    color: #414b66;
+  }
+  .bg-apple-blue {
+    background-color: #48526f;
+  }
+  .hover\:bg-apple-blue-hover:hover {
+    background-color: #3a425b;
+  }
+  .border-apple-line {
+    border-color: #e5e5ea;
+  }
+
+  /* Main Slate Indigo (User Color) Tokens */
+  .bg-olive {
+    background-color: #48526f;
+  }
+  .hover\:bg-olive-hover:hover {
+    background-color: #3a425b;
+  }
+  .text-olive {
+    color: #414b66;
+  }
+  .text-olive-dark {
+    color: #2e3549;
+  }
+  .border-olive {
+    border-color: #48526f;
+  }
+  .border-olive-line {
+    border-color: #d2d6e3;
+  }
+  .bg-olive-tint {
+    background-color: #eeeff4;
+  }
+
+  /* Matching Accent Point Color (Dusty Coral Rose) Tokens */
+  .bg-pink-accent {
+    background-color: #cf6b64;
+  }
+  .hover\:bg-pink-hover:hover {
+    background-color: #be5a53;
+  }
+  .text-pink-accent {
+    color: #cf6b64;
+  }
+  .text-pink-dark {
+    color: #b5524b;
+  }
+  .border-pink-line {
+    border-color: #f3d5d3;
+  }
+  .bg-pink-tint {
+    background-color: #faf0ef;
+  }
+
+  .bg-espresso {
+    background-color: #1d1d1f;
+  }
+  .text-espresso {
+    color: #1d1d1f;
+  }
+  .border-espresso {
+    border-color: #d1d1d6;
+  }
+  .text-chestnut {
+    color: #1d1d1f;
+  }
+  .text-chestnut-muted {
+    color: #6e6e73;
+  }
+  .bg-cream {
+    background-color: #f5f5f7;
+  }
+  .bg-cream-surface {
+    background-color: #ffffff;
+  }
+  .border-cream-line {
+    border-color: #e5e5ea;
+  }
+
+  /* Button Utility Classes - Apple Pill / HIG style */
+  .btn-olive-primary {
+    background-color: #48526f;
+    color: #ffffff;
+    border-radius: 980px;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-olive-primary:hover {
+    background-color: #3a425b;
+  }
+
+  .btn-pink-primary {
+    background-color: #cf6b64;
+    color: #ffffff;
+    border-radius: 980px;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-pink-primary:hover {
+    background-color: #be5a53;
+  }
+
+  .btn-espresso-secondary {
+    background-color: #ffffff;
+    color: #414b66;
+    border: 1px solid #d1d1d6;
+    border-radius: 980px;
+    font-weight: 500;
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .btn-espresso-secondary:hover {
+    background-color: #f5f5f7;
+    color: #48526f;
+    border-color: #48526f;
+  }
+
+  /* Apple Reference Card Base (18px radius, white surface, subtle border) */
+  .card-editorial {
+    background-color: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .card-editorial:hover {
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    border-color: #d1d1d6;
+  }
+
+  .bevel-plate {
+    background: #ffffff;
+    border: 1px solid #e5e5ea;
+    border-radius: 18px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+  }
+
+  .bevel-chip-orange {
+    background-color: #0071e3;
+    color: #ffffff;
+    border-radius: 980px;
+    font-weight: 500;
+  }
+
+  .bevel-chip-amber {
+    background-color: #f5f5f7;
+    color: #1d1d1f;
+    border: 1px solid #e5e5ea;
+    border-radius: 980px;
+    font-weight: 500;
+  }
+
+  .text-boxart {
+    color: #1d1d1f;
+    text-shadow: none;
+  }
+}
+
+/* Hide scrollbars */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
