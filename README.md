@@ -61,4 +61,5 @@ Next.js, React, TypeScript, Tailwind CSS, Vercel, browser localStorage.
 
 ## License
 
-[MIT License](LICENSE). 이 저장소에 포함된 공개 파일에 한해 적용됩니다.
+[Apache License 2.0](LICENSE). 이 저장소에 포함된 공개 파일에 한해 적용됩니다.
+재배포할 때는 `NOTICE` 를 같이 두고, 고친 파일에는 고쳤다는 표시를 남깁니다.
