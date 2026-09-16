@@ -1,5 +1,7 @@
 # AI Career Insight Coach
 
+[![CI](https://github.com/kordp888/career-insight-coach/actions/workflows/ci.yml/badge.svg)](https://github.com/kordp888/career-insight-coach/actions/workflows/ci.yml)
+
 [웹앱 사용하기](https://career-insight-coach.vercel.app/coach) · [GitHub 저장소](https://github.com/kordp888/career-insight-coach)
 
 관심 산업, 기업, 실제 채용공고와 자신의 경험을 입력하고 AI 분석 결과를 확인하는 커리어 작업 공간입니다. 경험에서 직무와 연결되는 근거를 찾고, 직접 선택한 인사이트를 이력서·자기소개서·포트폴리오로 정리합니다.
