@@ -17,8 +17,9 @@ type NavItem = { href: string; label: string; icon: LucideIcon };
 
 const GROUPS: { title?: string; items: NavItem[] }[] = [
   { items: [{ href: "/coach", label: "홈", icon: House }] },
+  { title: "나의 경험", items: [{ href: "/coach/experience", label: "경험 정리", icon: UserRound }] },
   {
-    title: "분석",
+    title: "지원할 곳",
     items: [
       { href: "/coach/industry", label: "산업 분석", icon: ChartColumn },
       { href: "/coach/company", label: "기업 분석", icon: Building },
@@ -26,9 +27,8 @@ const GROUPS: { title?: string; items: NavItem[] }[] = [
     ],
   },
   {
-    title: "나의 경험",
+    title: "연결",
     items: [
-      { href: "/coach/experience", label: "경험 정리", icon: UserRound },
       { href: "/coach/connect", label: "역량 연결", icon: Link2 },
       { href: "/coach/insight", label: "인사이트", icon: Lightbulb },
     ],

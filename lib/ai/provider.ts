@@ -7,7 +7,8 @@ import "server-only";
  * 분석 지시문도 없다. 서버 라우트만 이 어댑터를 부르므로 브라우저는 어댑터 주소를 모른다.
  */
 
-const COACH_URL = "https://dasion-app.vercel.app/api/coach";
+/** 코치 API 주소. 미리보기 배포를 겨냥해 시험할 때만 환경 변수로 바꾼다. */
+const COACH_URL = process.env.COACH_URL || "https://dasion-app.vercel.app/api/coach";
 const TIMEOUT_MS = 165_000;
 
 export type TaskName = "industry" | "company" | "job" | "experience" | "insight" | "document";

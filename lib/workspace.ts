@@ -2,7 +2,7 @@
 import { useSyncExternalStore } from "react";
 import { SAMPLE_TARGET, SAMPLE_INDUSTRY, SAMPLE_COMPANY, SAMPLE_JOB, SAMPLE_JD, SAMPLE_EXPERIENCE, SAMPLE_INSIGHT } from "./samples";
 import { applyWorkspacePatch, emptyWorkspace, newExperience, parseWorkspace } from "./workspace-data";
-import type { CareerWorkspace } from "./types";
+import type { CareerWorkspace, InventoryExperience } from "./types";
 export type Workspace = CareerWorkspace;
 const DEFAULT = emptyWorkspace();
 const KEY = "career-coach-workspace-v2";
@@ -36,6 +36,8 @@ export function useHydrated() { return useSyncExternalStore(subscribe, () => tru
 export function useStorageWarning() { return useSyncExternalStore(subscribe, () => storageWarning, () => ""); }
 export function useLastSavedAt() { return useSyncExternalStore(subscribe, () => lastSavedAt, () => 0); }
 export function updateWorkspace(patch: Partial<CareerWorkspace>) { load(); state = applyWorkspacePatch(state, patch); persist(); }
+/** 경험 하나를 현재 저장 상태 기준으로 고친다. AI 응답을 기다리는 동안 사용자가 카드를 고쳐도 덮어쓰지 않는다. */
+export function patchExperience(id: string, fn: (e: InventoryExperience) => InventoryExperience) { load(); updateWorkspace({ experiences: state.experiences.map(e => e.id === id ? fn(e) : e) }); }
 export function replaceWorkspace(next: CareerWorkspace) { state = parseWorkspace(JSON.stringify(next)); loaded = true; persist(); }
 export function switchToActual() { load(); try { const raw = localStorage.getItem(key("actual")); state = raw ? parseWorkspace(raw) : emptyWorkspace(); } catch { state = emptyWorkspace(); } persist(); }
 export function startSample() {
