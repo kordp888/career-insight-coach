@@ -3,12 +3,12 @@ import "server-only";
 /**
  * AI 분석 어댑터. 요청을 보내고, 응답을 꺼내고, 오류를 한 가지 모양으로 올린다.
  *
- * 분석은 다시ON5060 서비스의 코치 API가 처리한다. 이 저장소에는 API 키도,
+ * 분석은 비공개 저장소 career-coach-api 의 코치 API가 처리한다. 이 저장소에는 API 키도,
  * 분석 지시문도 없다. 서버 라우트만 이 어댑터를 부르므로 브라우저는 어댑터 주소를 모른다.
  */
 
 /** 코치 API 주소. 미리보기 배포를 겨냥해 시험할 때만 환경 변수로 바꾼다. */
-const COACH_URL = process.env.COACH_URL || "https://dasion-app.vercel.app/api/coach";
+const COACH_URL = process.env.COACH_URL || "https://career-coach-api-lemon.vercel.app/api/coach";
 const TIMEOUT_MS = 165_000;
 
 export type TaskName = "industry" | "company" | "job" | "experience" | "insight" | "document";
