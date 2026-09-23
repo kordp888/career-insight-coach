@@ -67,9 +67,7 @@ Pull Request를 만들기 전에 아래 검사를 실행합니다.
 
 ```bash
 git diff --check
-git grep -n "POTENS_API_KEY="
-git grep -n "OPENAI_API_KEY="
-git grep -n "ANTHROPIC_API_KEY="
+git grep -nE "[A-Z_]*(API_KEY|SECRET|TOKEN)="
 git grep -n "sk-"
 ```
 
