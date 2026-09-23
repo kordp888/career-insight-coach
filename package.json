@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "test": "node --experimental-strip-types --test tests/*.test.mjs"
+    "test": "node --experimental-strip-types --test tests/*.test.mjs",
+    "beta-check": "node --experimental-strip-types --no-warnings scripts/beta-check.mts"
   },
   "dependencies": {
     "lucide-react": "^1.45.0",
