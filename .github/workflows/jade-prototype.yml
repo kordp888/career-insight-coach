@@ -1,0 +1,54 @@
+name: Jade prototype
+
+on:
+  pull_request:
+    branches:
+      - develop
+    paths:
+      - "prototypes/jade-experience-digging-club/**"
+      - ".github/workflows/jade-prototype.yml"
+  push:
+    branches:
+      - "feature/jade/**"
+    paths:
+      - "prototypes/jade-experience-digging-club/**"
+      - ".github/workflows/jade-prototype.yml"
+
+permissions:
+  contents: read
+
+concurrency:
+  group: jade-prototype-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: TypeScript, audit and build
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: prototypes/jade-experience-digging-club
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+
+      - name: Use Node.js
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: prototypes/jade-experience-digging-club/package-lock.json
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: TypeScript
+        run: npm run lint
+
+      - name: Dependency audit
+        run: npm audit --audit-level=moderate
+
+      - name: Build
+        run: npm run build
