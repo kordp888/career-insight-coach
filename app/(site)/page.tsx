@@ -1,10 +1,11 @@
 import {
   ArrowRight, Building, ChartColumn, FilePenLine, FileText, GraduationCap, KeyRound, Lightbulb, Link2,
-  MessageSquareText, PenLine, Presentation, Quote, Sparkles, UserRound, Copy, Search, Shapes,
+  MessageSquareText, PenLine, Presentation, Quote, UserRound, Copy, Search, Shapes,
 } from "lucide-react";
 import { ButtonLink, GithubMark } from "@/components/ui/button";
 import { Chip } from "@/components/ui/card";
 import { HeroMockup } from "@/components/landing/hero-mockup";
+import { AiStatusBadge } from "@/components/landing/ai-status-badge";
 import { LetterPreview, PortfolioPreview, ResumePreview } from "@/components/outputs/doc-previews";
 import { LEARNING_CONTEXT, LEARNING_CONTEXT_EN, MY_ROLE, SITE, STEPS } from "@/lib/site";
 
@@ -53,9 +54,7 @@ export default function LandingPage() {
       <section className="overflow-hidden bg-gradient-to-b from-white to-canvas">
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:pb-28 lg:pt-20">
           <div>
-            <p className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-[13px] font-semibold text-ink-2">
-              <Sparkles className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> 실제 AI 분석 기능을 사용할 수 있습니다.
-            </p>
+            <AiStatusBadge />
             <h1 className="mt-6 text-[36px] font-bold leading-[1.22] tracking-tight text-navy sm:text-[46px] lg:text-[44px] xl:text-[52px]">
               <span className="whitespace-nowrap">AI가 대신 쓰는 게 아니라,</span>
               <br />
