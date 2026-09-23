@@ -17,9 +17,13 @@ iOS 앱의 가제는 **커리어 AI 웨이브**입니다. 웹 서비스 이름(�
 사람만 할 수 있는 단계입니다. Apple 계정에 로그인해야 하기 때문입니다.
 
 1. **번들 ID 등록.** developer.apple.com 의 Certificates, Identifiers & Profiles 에서 Identifiers 에 App ID 를 추가합니다. 설명은 CareerCoach, 번들 ID 는 위 표의 값(Explicit)입니다. 추가 기능은 켜지 않아도 됩니다.
-2. **배포 프로파일 생성.** 같은 화면의 Profiles 에서 Distribution 의 App Store Connect 유형을 고르고, 1번의 App ID 와 **기존** Apple Distribution 인증서를 선택합니다. 이름은 알아보기 쉽게 정합니다(예: CAREERCOACH). 내려받아 더블클릭하면 Xcode 에 설치됩니다.
+2. **배포 프로파일 생성.** 같은 화면의 Profiles 에서 Distribution 의 App Store Connect 유형을 고르고, 1번의 App ID 와 **기존** Apple Distribution 인증서를 선택합니다. 이름은 알아보기 쉽게 정합니다(예: CAREERCOACH). 내려받아 더블클릭하면 Xcode 에 설치됩니다(`~/Library/Developer/Xcode/UserData/Provisioning Profiles/<UUID>.mobileprovision` 으로 복사해도 같습니다).
    - 배포 인증서는 팀당 두 개가 한도입니다. 새로 만들지 마십시오. 새로 만들려면 기존 것을 폐기해야 하고, 그러면 그 인증서를 쓰는 다른 앱의 프로파일이 깨집니다.
-   - 같은 이름의 배포 인증서가 둘이면 프로파일에 들어간 쪽의 SHA-1 을 확인해 둡니다. 아래 스크립트에 이름 대신 SHA-1 을 넣어야 합니다.
+   - 인증서는 하나만 고를 수 있습니다. 같은 이름과 같은 만료일의 인증서가 둘이면 화면으로 구분되지 않으니, 하나를 골라 만든 뒤 받은 프로파일 안의 인증서 SHA-1 을 확인합니다. 스크립트에 넣을 SHA-1 과 다르면 다른 쪽으로 다시 만듭니다.
+
+     ```bash
+     security cms -D -i ~/Downloads/<프로파일>.mobileprovision | plutil -extract DeveloperCertificates.0 raw - | base64 -d | shasum
+     ```
 3. **App Store Connect 앱 생성.** 나의 앱에서 새로운 앱을 만들고 플랫폼 iOS, 기본 언어 한국어, 번들 ID 는 1번 값을 고릅니다. 앱 이름은 가제 "커리어 AI 웨이브"를 씁니다. App Store 전체에서 겹치면 안 되므로 이미 있으면 뒤에 한 낱말을 붙이는 식으로 정합니다. 홈 화면 이름은 이것과 별개입니다.
 
 ## 빌드 올리기
