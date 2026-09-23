@@ -1,14 +1,15 @@
 import {
   ArrowRight, Building, ChartColumn, FilePenLine, FileText, GraduationCap, KeyRound, Lightbulb, Link2,
-  MessageSquareText, PenLine, Presentation, Quote, Sparkles, UserRound, Copy, Search, Shapes,
+  MessageSquareText, PenLine, Presentation, Quote, UserRound, Copy, Search, Shapes,
 } from "lucide-react";
 import { ButtonLink, GithubMark } from "@/components/ui/button";
 import { Chip } from "@/components/ui/card";
 import { HeroMockup } from "@/components/landing/hero-mockup";
+import { AiStatusBadge } from "@/components/landing/ai-status-badge";
 import { LetterPreview, PortfolioPreview, ResumePreview } from "@/components/outputs/doc-previews";
 import { LEARNING_CONTEXT, LEARNING_CONTEXT_EN, MY_ROLE, SITE, STEPS } from "@/lib/site";
 
-const STEP_ICONS = [ChartColumn, Building, FileText, UserRound, Link2, Lightbulb, FilePenLine];
+const STEP_ICONS = [UserRound, ChartColumn, Building, FileText, Link2, Lightbulb, FilePenLine];
 
 const PROBLEMS = [
   { no: "01", title: "비슷해지는 AI 문장", icon: Copy },
@@ -53,9 +54,7 @@ export default function LandingPage() {
       <section className="overflow-hidden bg-gradient-to-b from-white to-canvas">
         <div className="mx-auto grid max-w-6xl items-center gap-14 px-5 pb-20 pt-12 sm:px-8 sm:pt-16 lg:grid-cols-[1.15fr_1fr] lg:gap-12 lg:pb-28 lg:pt-20">
           <div>
-            <p className="inline-flex items-center gap-1.5 rounded-full border border-line bg-white px-3 py-1.5 text-[13px] font-semibold text-ink-2">
-              <Sparkles className="h-3.5 w-3.5 text-brand" aria-hidden="true" /> 실제 AI 분석 기능을 사용할 수 있습니다.
-            </p>
+            <AiStatusBadge />
             <h1 className="mt-6 text-[36px] font-bold leading-[1.22] tracking-tight text-navy sm:text-[46px] lg:text-[44px] xl:text-[52px]">
               <span className="whitespace-nowrap">AI가 대신 쓰는 게 아니라,</span>
               <br />
@@ -104,14 +103,14 @@ export default function LandingPage() {
             <br className="hidden sm:block" /> 자신의 경험에서 <span className="text-brand">더 좋은 답을 발견하도록</span> 돕는 것이 더 가치 있습니다.
           </blockquote>
           <p className="mx-auto mt-6 max-w-xl text-[16px] leading-relaxed text-ink-2 sm:text-[17px]">
-            산업과 직무를 먼저 이해하고, 그 관점으로 나의 경험을 다시 바라봅니다.
+            경험을 먼저 꺼내고, 산업과 직무를 이해한 관점으로 그 경험을 다시 바라봅니다.
           </p>
         </div>
       </section>
 
       {/* 과정 */}
       <section id="process" className="mx-auto max-w-6xl px-5 py-20 sm:px-8 lg:py-24">
-        <SectionTitle kicker="과정" title="인사이트 발견 과정" desc="경험을 정리하기 전에, 지원하려는 산업과 기업과 직무부터 살펴봅니다." />
+        <SectionTitle kicker="과정" title="인사이트 발견 과정" desc="기억나는 경험부터 꺼내고, 지원하려는 산업과 기업과 직무를 이해한 뒤 다시 경험으로 돌아옵니다." />
         <ol className="relative mt-12 grid gap-3 lg:grid-cols-7 lg:gap-2">
           <div aria-hidden="true" className="absolute left-[27px] top-4 hidden h-[calc(100%-2rem)] w-px bg-line max-lg:block" />
           <div aria-hidden="true" className="absolute left-[7%] right-[7%] top-[27px] hidden h-px bg-line lg:block" />

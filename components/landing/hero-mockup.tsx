@@ -3,10 +3,10 @@ import appIcon from "@/assets/app-icon.png";
 import { ChartColumn, Building, FileText, UserRound, Lightbulb, FilePenLine, Check, ListChecks, Target, Link2, House } from "lucide-react";
 
 const PROGRESS = [
+  { label: "경험 정리", icon: UserRound, state: "done" },
   { label: "산업 분석", icon: ChartColumn, state: "done" },
-  { label: "기업 분석", icon: Building, state: "done" },
-  { label: "직무 분석", icon: FileText, state: "now" },
-  { label: "경험 정리", icon: UserRound, state: "todo" },
+  { label: "기업 분석", icon: Building, state: "now" },
+  { label: "직무 분석", icon: FileText, state: "todo" },
   { label: "인사이트 발견", icon: Lightbulb, state: "todo" },
   { label: "문서화", icon: FilePenLine, state: "todo" },
 ] as const;
